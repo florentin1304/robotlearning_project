@@ -28,7 +28,7 @@ def main(args):
 
     log_dir = os.path.join(os.getcwd(), "train_logs")
     os.makedirs(log_dir, exist_ok=True)
-    env = Monitor(env, os.path.join(log_dir, run_name+".csv"))
+    env = Monitor(env, os.path.join(log_dir, run_name))
 
     if args.verbose:
         print('State space:', env.observation_space)  # state-space
