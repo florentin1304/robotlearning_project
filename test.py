@@ -37,7 +37,7 @@ def main(args):
     if not os.path.isdir(model_folder):    
         os.makedirs(model_folder)
     model_name = f"{args.algo}_{args.domain}" + \
-                f"_{args.delta}{ '_perc' if args.perc else ''}.ai" if args.domain == "udr" else ".ai"
+                (f"_{args.delta}{ '_perc' if args.perc else ''}.ai" if args.domain == "udr" else ".ai")
     model_path = os.path.join(model_folder, model_name)
 
     if args.algo.lower() == 'ppo': 
