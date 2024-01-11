@@ -58,11 +58,11 @@ def main(args):
                                     render=False
                                 )
     print("="*35)
-    log_file_name = args.model.split("/")[-1].split(".")[0] + ".txt"
+    log_file_name = args.model.split("/")[-1].split(".")[0] + f"_test_on_{args.domain}" + ".txt"
     log_file_path = os.path.join(test_log_dir, log_file_name)
     file_contents = ""
     file_contents += f"Model: {args.model}" + "\n"
-    file_contents += f"Domain: {args.model}" + "\n"
+    file_contents += f"Domain tested on: {args.domain}" + "\n"
     file_contents += f"Mean reward: {mean_reward}" + "\n"
     file_contents += f"Std reward: {std_reward}"
     
