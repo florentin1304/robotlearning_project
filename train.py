@@ -3,6 +3,9 @@
     Read the stable-baselines3 documentation and implement a training
     pipeline with an RL algorithm of your choice between TRPO, PPO, and SAC.
 """
+import warnings
+warnings.filterwarnings("ignore")
+
 import gym
 import os
 from env.custom_hopper import *
