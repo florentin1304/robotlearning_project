@@ -24,6 +24,9 @@ def main(args):
     set_seed(args.seed)
     env = gym.make(f'CustomHopper-{args.domain}-v0')
 
+    test_log_dir = os.path.join(os.getcwd(), "test_logs")
+    os.makedirs(test_log_dir, exist_ok=True)
+
     if args.verbose:
         print('State space:', env.observation_space)  # state-space
         print('Action space:', env.action_space)  # action-space
@@ -55,10 +58,19 @@ def main(args):
                                     render=False
                                 )
     print("="*35)
-    print("Model: ", args.model)
-    print("Domain: ", args.model)
-    print("Mean reward:", mean_reward)
-    print("Std reward:", std_reward)
+    log_file_name = args.model.split("/")[-1].split(".")[0] + ".txt"
+    log_file_path = os.path.join(test_log_dir, log_file_name)
+    file_contents = ""
+    file_contents += f"Model: {args.model}" + "\n"
+    file_contents += f"Domain: {args.model}" + "\n"
+    file_contents += f"Mean reward: {mean_reward}" + "\n"
+    file_contents += f"Std reward: {std_reward}"
+    
+    with open(log_file_path, "w") as f:
+        f.write(file_contents)
+    
+    print("="*30)
+    print(file_contents)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
