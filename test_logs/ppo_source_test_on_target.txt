@@ -1,4 +1,4 @@
 Model: models/ppo_source.ai
 Domain tested on: target
-Mean reward: 136.3699156576395
-Std reward: 23.41281321203974
+Mean reward: 122.84281284570694
+Std reward: 10.733444957402423
