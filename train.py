@@ -24,16 +24,19 @@ def main(args):
     set_seed(args.seed)
     env = gym.make(f'CustomHopper-{args.domain}-v0')
     
+    run_name = f"{args.algo}_{args.domain}"
+
     if args.domain=='udr':
+        run_name += f"_{str(args.delta).replace('.', '')}{ '_perc' if args.perc else ''}"
         env.set_delta(args.delta, args.perc)
     if args.domain=='Gauss':
+        run_name += f"_{str(args.var).replace('.', '')}"
         ### (!!!) Doesnt touch masses[0] inside 
         masses = env.get_parameters()
         num_masses = len(masses)
         vars = args.var * np.ones((num_masses,))
         env.set_Gaussian_mean_var(masses, vars)
     
-    run_name = f"{args.algo}_{args.domain}" + (f"_{str(args.delta).replace('.', '')}{ '_perc' if args.perc else ''}" if args.domain == "udr" else "")
 
     log_dir = os.path.join(os.getcwd(), "train_logs")
     os.makedirs(log_dir, exist_ok=True)
