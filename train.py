@@ -26,6 +26,12 @@ def main(args):
     
     if args.domain=='udr':
         env.set_delta(args.delta, args.perc)
+    if args.domain=='Gauss':
+        ### (!!!) Doesnt touch masses[0] inside 
+        masses = env.get_parameters()
+        num_masses = len(masses)
+        vars = args.var * np.ones((num_masses,))
+        env.set_Gaussian_mean_var(masses, vars)
     
     run_name = f"{args.algo}_{args.domain}" + (f"_{str(args.delta).replace('.', '')}{ '_perc' if args.perc else ''}" if args.domain == "udr" else "")
 
@@ -70,10 +76,13 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--seed', default=0, type=int, help='Random seed')
 
-    parser.add_argument("--domain", type=str, choices=['source', 'target', 'udr'], required=True,
-                        help="Domain to use: ['source', 'target', 'udr']")
+    parser.add_argument("--domain", type=str, choices=['source', 'target', 'udr', "Gauss"], required=True,
+                        help="Domain to use: ['source', 'target', 'udr', 'Gauss']")
     parser.add_argument("--delta", type=float, default=1.0, help="If domain=='udr', delta used for the range of randomization")
     parser.add_argument('--perc', action='store_true', help='Delta used as percentage')
+
+    parser.add_argument("--var", type=float, default=1.0, help="If domain=='Gauss', vars used for the range of randomization")
+
     parser.add_argument("--total_timesteps", type=int, default=500_000, help="The total number of samples to train on")
     parser.add_argument('--algo', default='ppo', type=str, choices=['ppo', 'sac'], help='RL Algo [ppo, sac]')
     parser.add_argument('--lr', default=0.0003, type=float, help='Learning rate')
