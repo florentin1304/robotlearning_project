@@ -52,8 +52,11 @@ def main(args):
     print("Training: ", run_name)
     
     # Stop training if there is no improvement after more than 3 evaluations
-    stop_train_callback = StopTrainingOnNoModelImprovement(max_no_improvement_evals=3, min_evals=10, verbose=1)
-    eval_callback = EvalCallback(env, n_eval_episodes=20, eval_freq=10_000, callback_after_eval=stop_train_callback, verbose=1)
+    if args.es_num_evals_no_improvement != -1:
+        stop_train_callback = StopTrainingOnNoModelImprovement(max_no_improvement_evals=args.es_num_evals_no_improvement-1, min_evals=8, verbose=1)
+    eval_callback = EvalCallback(env, n_eval_episodes=20, eval_freq=10_000, verbose=1, \
+                                     callback_after_eval=stop_train_callback if args.es_num_evals_no_improvement != -1 else None)
+    
 
 
     model.learn(total_timesteps=args.total_timesteps, callback=eval_callback)
@@ -70,7 +73,7 @@ if __name__ == '__main__':
     parser.add_argument("--total_timesteps", type=int, default=500_000, help="The total number of samples to train on")
     parser.add_argument('--algo', default='ppo', type=str, choices=['ppo', 'sac'], help='RL Algo [ppo, sac]')
     parser.add_argument('--lr', default=0.0003, type=float, help='Learning rate')
-    parser.add_argument('--early_stopping', action="store_true", help="Enable early stopping")
+    parser.add_argument('--es_num_evals_no_improvement', default=5, type=int, help="Enable early stopping")
     # parser.add_argument('--gradient_steps', default=-1, type=int, help='Number of gradient steps when policy is updated in sb3 using SAC. -1 means as many as --args.now')
     parser.add_argument('--verbose', action='store_true', help='Verbose')
     
