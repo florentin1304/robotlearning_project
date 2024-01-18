@@ -58,6 +58,7 @@ def main(args):
     if args.es_num_evals_no_improvement != -1:
         stop_train_callback = StopTrainingOnNoModelImprovement(max_no_improvement_evals=args.es_num_evals_no_improvement-1, min_evals=8, verbose=1)
     eval_callback = EvalCallback(env, n_eval_episodes=20, eval_freq=10_000, verbose=1, \
+                                 best_model_save_path=model_path, \
                                      callback_after_eval=stop_train_callback if args.es_num_evals_no_improvement != -1 else None)
     
 
