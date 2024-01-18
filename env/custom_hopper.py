@@ -11,7 +11,7 @@ from .mujoco_env import MujocoEnv
 from scipy.stats import truncnorm
 
 class CustomHopper(MujocoEnv, utils.EzPickle):
-    def __init__(self, domain=None, random_range=None):
+    def __init__(self, domain=None, mode=None):
         MujocoEnv.__init__(self, 4)
         utils.EzPickle.__init__(self)
 
@@ -20,38 +20,58 @@ class CustomHopper(MujocoEnv, utils.EzPickle):
         if domain == 'source':  # Source environment has an imprecise torso mass (1kg shift)
             self.sim.model.body_mass[1] -= 1.0
         
-        self.random_range = random_range
+        self.mode = mode
 
     def set_random_parameters(self):
         """Set random masses
         TODO
         """
+        if self.mode == 'udr' and self.perc is None:
+            raise Exception('must call set_delta in order to use sample_parameters()')        
+        if self.mode == 'Gauss' and self.mean is None:
+            raise Exception('must call set_Gaussian_mean_var in order to use sample_parameters()')
+        
         self.set_parameters(self.sample_parameters())
 
     def set_delta(self, delta=1, perc=False):
-        self.random_range = delta
+        if self.mode != 'udr':
+            raise Exception('wrong environment !!! You should use CustomHopper-udr-v0')
+
+        self.delta = delta
         self.perc = perc
+
+    def set_Gaussian_mean_var(self, mean, var):
+        if self.mode != 'Gauss':
+            raise Exception('wrong environment !!! You should use CustomHopper-Gauss-v0')
+        if len(mean) != len(var):
+            raise Exception('mean and var have different lengths')
+        self.mean = mean
+        self.var = var
 
     def sample_parameters(self):
         """Sample masses according to a domain randomization distribution
         TODO
         """
         new_masses = np.copy(self.get_parameters())
-        
-        if self.perc :
-            perc = self.random_range
-            if perc <= 0 or perc >= 1:
-                exit()
-            for i in range(1, len(new_masses)):
-                lb = max(0.1, new_masses[i] * (1-perc))
-                ub = new_masses[i] * (1+perc)
-                new_masses[i] = np.random.uniform(lb, ub)
-        else:
-            delta = self.random_range
-            for i in range(1, len(new_masses)):
-                lb = max(0.1, new_masses[i] - delta)
-                ub = new_masses[i] + delta
-                new_masses[i] = np.random.uniform(lb, ub)
+
+        if self.mode == 'udr':
+            if self.perc :
+                perc = self.delta
+                if perc <= 0 or perc >= 1:
+                    raise Exception('perc out of boundaries (0,1)')
+                for i in range(1, len(new_masses)): #start from index 1 because index 0 is torso mass
+                    lb = max(0.1, new_masses[i] * (1-perc))
+                    ub = new_masses[i] * (1+perc)
+                    new_masses[i] = np.random.uniform(lb, ub)
+            else:
+                delta = self.delta
+                for i in range(1, len(new_masses)): #start from index 1 because index 0 is torso mass
+                    lb = max(0.1, new_masses[i] - delta)
+                    ub = new_masses[i] + delta
+                    new_masses[i] = np.random.uniform(lb, ub)
+        elif self.mode == 'Gauss':
+            for mass in range(1, len(self.mean)): #start from index 1 because index 0 is torso mass
+                new_masses[mass] = np.random.normal(self.mean[mass], np.sqrt(self.var[mass]))
 
         return new_masses
 
@@ -98,7 +118,7 @@ class CustomHopper(MujocoEnv, utils.EzPickle):
         qvel = self.init_qvel + self.np_random.uniform(low=-.005, high=.005, size=self.model.nv)
         self.set_state(qpos, qvel)
     
-        if self.random_range is not None:
+        if self.mode is not None:
             self.set_random_parameters()
     
         return self._get_obs()
@@ -139,6 +159,13 @@ gym.envs.register(
         entry_point="%s:CustomHopper" % __name__,
         max_episode_steps=500,
         kwargs={"domain": "source",
-                "random_range": 1}
+                "mode": 'udr'}
 )
 
+gym.envs.register(
+        id="CustomHopper-Gauss-v0",
+        entry_point="%s:CustomHopper" % __name__,
+        max_episode_steps=500,
+        kwargs={"domain": "source",
+                "mode": 'Gauss'}
+)
