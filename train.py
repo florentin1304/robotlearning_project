@@ -14,7 +14,7 @@ from stable_baselines3.common.evaluation import evaluate_policy
 
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.results_plotter import load_results, ts2xy
-
+from stable_baselines3.common.callbacks import EvalCallback, StopTrainingOnNoModelImprovement
 
 def set_seed(seed):
     if seed > 0:
@@ -50,7 +50,13 @@ def main(args):
         raise Exception(f"Algorithm {args.algo} unknown")
     
     print("Training: ", run_name)
-    model.learn(total_timesteps=args.total_timesteps)
+    
+    # Stop training if there is no improvement after more than 3 evaluations
+    stop_train_callback = StopTrainingOnNoModelImprovement(max_no_improvement_evals=3, min_evals=10, verbose=1)
+    eval_callback = EvalCallback(env, n_eval_episodes=20, eval_freq=10_000, callback_after_eval=stop_train_callback, verbose=1)
+
+
+    model.learn(total_timesteps=args.total_timesteps, callback=eval_callback)
     model.save(model_path)
 
 if __name__ == '__main__':
