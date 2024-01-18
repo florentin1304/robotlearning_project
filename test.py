@@ -32,13 +32,13 @@ def main(args):
         print('Action space:', env.action_space)  # action-space
         print('Dynamics parameters:', env.get_parameters())  # masses of each link of the Hopper
     
-    model_folder = "models"
-    model_folder = os.path.join(os.getcwd(), model_folder)
-    if not os.path.isdir(model_folder):    
-        os.makedirs(model_folder)
-    model_name = f"{args.algo}_{args.domain}" + \
-                (f"_{args.delta}{ '_perc' if args.perc else ''}.ai" if args.domain == "udr" else ".ai")
-    model_path = os.path.join(model_folder, model_name)
+    # model_folder = "models"
+    # model_folder = os.path.join(os.getcwd(), model_folder)
+    # if not os.path.isdir(model_folder):    
+    #     os.makedirs(model_folder)
+    # model_name = f"{args.algo}_{args.domain}" + \
+    #             (f"_{args.delta}{ '_perc' if args.perc else ''}.ai" if args.domain == "udr" else ".ai")
+    # model_path = os.path.join(model_folder, model_name)
 
     if args.algo.lower() == 'ppo': 
         model = PPO("MlpPolicy", env, verbose=args.verbose)

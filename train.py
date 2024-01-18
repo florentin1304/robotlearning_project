@@ -42,7 +42,7 @@ def main(args):
     model_folder = os.path.join(os.getcwd(), model_folder)
     os.makedirs(model_folder, exist_ok=True)
 
-    model_name = run_name + ".ai"
+    model_name = run_name
     model_path = os.path.join(model_folder, model_name)
 
     if args.algo.lower() == 'ppo': 
