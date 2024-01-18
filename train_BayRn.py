@@ -24,9 +24,6 @@ def main(args):
     set_seed(args.seed)
     env = gym.make(f'CustomHopper-{args.domain}-v0')
     
-    if args.domain=='udr':
-        env.set_delta(args.delta, args.perc)
-    
     run_name = f"{args.algo}_{args.domain}" + (f"_{str(args.delta).replace('.', '')}{ '_perc' if args.perc else ''}" if args.domain == "udr" else "")
 
     log_dir = os.path.join(os.getcwd(), "train_logs")
@@ -57,6 +54,7 @@ def main(args):
     # Stop training if there is no improvement after more than 3 evaluations
     stop_train_callback = StopTrainingOnNoModelImprovement(max_no_improvement_evals=3, min_evals=10, verbose=1)
     eval_callback = EvalCallback(env, n_eval_episodes=20, eval_freq=10_000, callback_after_eval=stop_train_callback, verbose=1)
+
 
 
     model.learn(total_timesteps=args.total_timesteps, callback=eval_callback)

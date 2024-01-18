@@ -28,30 +28,17 @@ class CustomHopper(MujocoEnv, utils.EzPickle):
         """
         self.set_parameters(self.sample_parameters())
 
-    def set_delta(self, delta=1, perc=False):
-        self.random_range = delta
-        self.perc = perc
-
     def sample_parameters(self):
         """Sample masses according to a domain randomization distribution
         TODO
         """
         new_masses = np.copy(self.get_parameters())
-        
-        if self.perc :
-            perc = self.random_range
-            if perc <= 0 or perc >= 1:
-                exit()
-            for i in range(1, len(new_masses)):
-                lb = max(0.1, new_masses[i] * (1-perc))
-                ub = new_masses[i] * (1+perc)
-                new_masses[i] = np.random.uniform(lb, ub)
-        else:
-            delta = self.random_range
-            for i in range(1, len(new_masses)):
-                lb = max(0.1, new_masses[i] - delta)
-                ub = new_masses[i] + delta
-                new_masses[i] = np.random.uniform(lb, ub)
+
+        delta = self.random_range
+        for i in range(1, len(new_masses)):
+            lb = max(0.1, new_masses[i] - delta)
+            ub = new_masses[i] + delta
+            new_masses[i] = np.random.uniform(lb, ub)
 
         return new_masses
 
