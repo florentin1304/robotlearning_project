@@ -20,6 +20,28 @@ def set_seed(seed):
     if seed > 0:
         np.random.seed(seed)
 
+def train(env, model_path, algorithm="ppo", total_timesteps=500_000, es_num_evals_no_improvement=5, verbose=False):
+    
+    print("Training: ", model_path)
+    
+    if algorithm.lower() == 'ppo': 
+        model = PPO("MlpPolicy", env, verbose=verbose)
+    elif algorithm.lower() == 'sac':
+        model = SAC("MlpPolicy", env, verbose=verbose)
+    else:
+        raise Exception(f"Algorithm {algorithm} unknown")
+
+    # Stop training if there is no improvement after more than 3 evaluations
+    if es_num_evals_no_improvement != -1:
+        stop_train_callback = StopTrainingOnNoModelImprovement(max_no_improvement_evals=es_num_evals_no_improvement-1, min_evals=8, verbose=1)
+    eval_callback = EvalCallback(env, n_eval_episodes=20, eval_freq=10_000, verbose=1, \
+                                 best_model_save_path=model_path, \
+                                     callback_after_eval=stop_train_callback if es_num_evals_no_improvement != -1 else None)
+    
+    model.learn(total_timesteps=total_timesteps, callback=eval_callback)
+
+    return model
+
 def main(args):
     set_seed(args.seed)
     env = gym.make(f'CustomHopper-{args.domain}-v0')
@@ -54,26 +76,11 @@ def main(args):
     model_name = run_name
     model_path = os.path.join(model_folder, model_name)
 
-    if args.algo.lower() == 'ppo': 
-        model = PPO("MlpPolicy", env, verbose=args.verbose)
-    elif args.algo.lower() == 'sac':
-        model = SAC("MlpPolicy", env, verbose=args.verbose)
-    else:
-        raise Exception(f"Algorithm {args.algo} unknown")
-    
-    print("Training: ", run_name)
-    
-    # Stop training if there is no improvement after more than 3 evaluations
-    if args.es_num_evals_no_improvement != -1:
-        stop_train_callback = StopTrainingOnNoModelImprovement(max_no_improvement_evals=args.es_num_evals_no_improvement-1, min_evals=8, verbose=1)
-    eval_callback = EvalCallback(env, n_eval_episodes=20, eval_freq=10_000, verbose=1, \
-                                 best_model_save_path=model_path, \
-                                     callback_after_eval=stop_train_callback if args.es_num_evals_no_improvement != -1 else None)
-    
-
-
-    model.learn(total_timesteps=args.total_timesteps, callback=eval_callback)
-    model.save(model_path)
+    trained_model = train(env, model_path=model_path, \
+                        algorithm=args.algo, \
+                        total_timesteps=args.total_timesteps,\
+                        es_num_evals_no_improvement=args.es_num_evals_no_improvement,
+                        verbose=args.verbose)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
