@@ -22,7 +22,8 @@ def test_policy_params(x):
     print(x)
     mean = x[ : len(x)//2]
     vars = x[len(x)//2 : ]
-
+    print(mean)
+    print(vars)
     source_env = gym.make(f'CustomHopper-Gauss-v0')
     target_env = gym.make(f'CustomHopper-target-v0')
 
