@@ -53,10 +53,9 @@ def main(args):
         env.set_delta(args.delta, args.perc)
     if args.domain=='Gauss':
         run_name += f"_{str(args.var).replace('.', '')}"
-        ### (!!!) Doesnt touch masses[0] inside 
-        masses = env.get_parameters()
+        masses = env.get_parameters()[1:]
         num_masses = len(masses)
-        vars = args.var * np.ones((num_masses,))
+        vars = args.var * np.ones((num_masses-1,))
         env.set_Gaussian_mean_var(masses, vars)
     
 
