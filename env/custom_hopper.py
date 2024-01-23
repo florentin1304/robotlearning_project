@@ -16,7 +16,7 @@ class CustomHopper(MujocoEnv, utils.EzPickle):
         utils.EzPickle.__init__(self)
 
         self.original_masses = np.copy(self.sim.model.body_mass[1:])    # Default link masses
-
+        self.min_mass = 0.1
         if domain == 'source':  # Source environment has an imprecise torso mass (1kg shift)
             self.sim.model.body_mass[1] -= 1.0
         
@@ -60,18 +60,18 @@ class CustomHopper(MujocoEnv, utils.EzPickle):
                 if perc <= 0 or perc >= 1:
                     raise Exception('perc out of boundaries (0,1)')
                 for i in range(1, len(new_masses)): #start from index 1 because index 0 is torso mass
-                    lb = max(0.1, new_masses[i] * (1-perc))
+                    lb = max(self.min_mass, new_masses[i] * (1-perc))
                     ub = new_masses[i] * (1+perc)
                     new_masses[i] = np.random.uniform(lb, ub)
             else:
                 delta = self.delta
                 for i in range(1, len(new_masses)): #start from index 1 because index 0 is torso mass
-                    lb = max(0.1, new_masses[i] - delta)
+                    lb = max(self.min_mass, new_masses[i] - delta)
                     ub = new_masses[i] + delta
                     new_masses[i] = np.random.uniform(lb, ub)
         elif self.mode == 'Gauss':
             for mass in range(1, len(new_masses)): #start from index 1 because index 0 is torso mass
-                new_masses[mass] = np.random.normal(self.mean[mass-1], np.sqrt(self.var[mass-1]))
+                new_masses[mass] = np.max(self.min_mass, np.random.normal(self.mean[mass-1], np.sqrt(self.var[mass-1])))
 
         return new_masses
 
