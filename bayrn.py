@@ -31,7 +31,7 @@ def test_policy_params(x):
     ### (!!!) Doesn't touch masses[0] inside 
     masses = source_env.get_parameters()
     num_masses = len(masses)
-    assert len(mean) == num_masses 
+    assert len(mean) == num_masses-1 
     source_env.set_Gaussian_mean_var(masses, vars)
 
     trained_model = train(source_env, "bayrn/model/bho.ai", "ppo")
