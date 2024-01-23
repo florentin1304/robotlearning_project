@@ -19,8 +19,9 @@ torch.set_default_dtype(torch.float64)
 
 
 def test_policy_params(x):
-    mean = x[:len(x)//2]
-    vars = x[len(x)//2:]
+    print(x)
+    mean = x[ : len(x)//2]
+    vars = x[len(x)//2 : ]
 
     source_env = gym.make(f'CustomHopper-Gauss-v0')
     target_env = gym.make(f'CustomHopper-target-v0')
