@@ -19,11 +19,9 @@ torch.set_default_dtype(torch.float64)
 
 
 def test_policy_params(x):
-    print(x)
-    mean = x[ : len(x)//2]
+    means = x[ : len(x)//2]
     vars = x[len(x)//2 : ]
-    print(mean)
-    print(vars)
+
     source_env = gym.make(f'CustomHopper-Gauss-v0')
     target_env = gym.make(f'CustomHopper-target-v0')
 
@@ -33,8 +31,8 @@ def test_policy_params(x):
     ### (!!!) Doesn't touch masses[0] inside 
     masses = source_env.get_parameters()
     num_masses = len(masses)
-    assert len(mean) == num_masses-1 
-    source_env.set_Gaussian_mean_var(masses, vars)
+    assert len(means) == num_masses-1 
+    source_env.set_Gaussian_mean_var(means, vars)
 
     trained_model = train(source_env, "bayrn/model/bho.ai", "ppo")
 
