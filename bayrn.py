@@ -15,7 +15,7 @@ import warnings
 warnings.filterwarnings("ignore", category=InputDataWarning)
 
 import gym
-
+from stable_baselines.bench.monitor import Monitor
 from train import train
 from test import test
 
