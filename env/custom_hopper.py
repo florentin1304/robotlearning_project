@@ -71,7 +71,7 @@ class CustomHopper(MujocoEnv, utils.EzPickle):
                     new_masses[i] = np.random.uniform(lb, ub)
         elif self.mode == 'Gauss':
             for mass in range(1, len(new_masses)): #start from index 1 because index 0 is torso mass
-                new_masses[mass] = np.max(self.min_mass, np.random.normal(self.mean[mass-1], np.sqrt(self.var[mass-1])))
+                new_masses[mass] = max(self.min_mass, np.random.normal( self.mean[mass-1], np.sqrt(self.var[mass-1])) )
 
         return new_masses
 
