@@ -28,8 +28,8 @@ def test_policy_params(x):
 
     print(f"Start training with \nMeans: {means} \nVars: {vars}")
 
-    source_env = gym.make(f'CustomHopper-Gauss-v0')
-    target_env = gym.make(f'CustomHopper-target-v0')
+    source_env =  Monitor(gym.make(f'CustomHopper-Gauss-v0'))
+    target_env = Monitor(gym.make(f'CustomHopper-target-v0'))
 
     # run_name = f"{args.algo}_{args.domain}"
     # run_name += f"_{str(args.var).replace('.', '')}"
