@@ -33,12 +33,19 @@ def train(env, model_path, algorithm="ppo", total_timesteps=500_000, es_num_eval
 
     # Stop training if there is no improvement after more than 3 evaluations
     if es_num_evals_no_improvement != -1:
-        stop_train_callback = StopTrainingOnNoModelImprovement(max_no_improvement_evals=es_num_evals_no_improvement-1, min_evals=8, verbose=1)
-    eval_callback = EvalCallback(env, n_eval_episodes=20, eval_freq=10_000, verbose=1, \
+        stop_train_callback = StopTrainingOnNoModelImprovement(max_no_improvement_evals=es_num_evals_no_improvement-1, min_evals=8, verbose=int(verbose))
+    eval_callback = EvalCallback(env, n_eval_episodes=20, eval_freq=10_000, verbose=int(verbose), \
                                  best_model_save_path=model_path, \
                                      callback_after_eval=stop_train_callback if es_num_evals_no_improvement != -1 else None)
     
-    model.learn(total_timesteps=total_timesteps, callback=eval_callback)
+    model.learn(total_timesteps=total_timesteps, callback=eval_callback, progress_bar=True)
+
+    if algorithm.lower() == 'ppo': 
+        model = PPO.load(os.path.join(model_path, "best_model"))
+    elif algorithm.lower() == 'sac':
+        model = SAC.load(os.path.join(model_path, "best_model"))
+    else:
+        raise Exception(f"Algorithm {algorithm} unknown")
 
     return model
 

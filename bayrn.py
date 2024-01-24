@@ -22,6 +22,8 @@ def test_policy_params(x):
     means = x[ : len(x)//2]
     vars = x[len(x)//2 : ]
 
+    print(f"Start training with \n Means: {means} \nVars: {vars}")
+
     source_env = gym.make(f'CustomHopper-Gauss-v0')
     target_env = gym.make(f'CustomHopper-target-v0')
 
@@ -32,11 +34,17 @@ def test_policy_params(x):
     masses = source_env.get_parameters()
     num_masses = len(masses)
     assert len(means) == num_masses-1 
+
     source_env.set_Gaussian_mean_var(means, vars)
 
-    trained_model = train(source_env, "bayrn/model/bho.ai", "ppo")
+    trained_model = train(source_env, "bayrn/model/last_iteration", "ppo")
+
+
+    result_mean, result_std = test(trained_model, source_env, n_episodes=250)
+    print(f"Results on source_env: {result_mean} +- {result_std}")
 
     result_mean, result_std = test(trained_model, target_env, n_episodes=100)
+    print(f"Results on target_env: {result_mean} +- {result_std}")
     
     return result_mean, result_std
 
