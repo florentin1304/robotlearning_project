@@ -57,7 +57,7 @@ def main():
 
     NUM_ITERATIONS = 100 
 
-    train_x, train_y, train_y_var = generate_initial_data(n=3, bounds=bounds)
+    train_x, train_y, train_y_var = generate_initial_data(n=8, bounds=bounds)
     best_observed = torch.max(train_y)
 
     for iteration in range(1, NUM_ITERATIONS + 1):    
@@ -129,7 +129,7 @@ def get_next_points(train_x, train_y, train_y_var, best_y, bounds, n_points):
     
     mll, model = initialize_model(train_x, train_y, train_y_var)
 
-    fit_gpytorch_model(mll, retain_graph=True)
+    fit_gpytorch_model(mll)
 
     sampler = SobolQMCNormalSampler(1024)
     qNEI = qNoisyExpectedImprovement(model, train_x, sampler)
