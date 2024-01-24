@@ -10,6 +10,10 @@ from botorch.optim import optimize_acqf
 from botorch.acquisition.monte_carlo import qNoisyExpectedImprovement
 from botorch.sampling import IIDNormalSampler, SobolQMCNormalSampler
 
+from botorch.exceptions import InputDataWarning
+import warnings
+warnings.filterwarnings("ignore", category=InputDataWarning)
+
 import gym
 
 from train import train
