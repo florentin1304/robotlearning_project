@@ -3,7 +3,7 @@ import torch
 import numpy as np
 import botorch
 from botorch import fit_gpytorch_model
-from botorch.models import HeteroskedasticSingleTaskGP
+from botorch.models import HeteroskedasticSingleTaskGP, SingleTaskGP
 from gpytorch.mlls.sum_marginal_log_likelihood import ExactMarginalLogLikelihood
 from botorch import fit_gpytorch_model
 from botorch.optim import optimize_acqf
@@ -22,7 +22,7 @@ def test_policy_params(x):
     means = x[ : len(x)//2]
     vars = x[len(x)//2 : ]
 
-    print(f"Start training with \n Means: {means} \nVars: {vars}")
+    print(f"Start training with \nMeans: {means} \nVars: {vars}")
 
     source_env = gym.make(f'CustomHopper-Gauss-v0')
     target_env = gym.make(f'CustomHopper-target-v0')
@@ -107,7 +107,7 @@ def generate_initial_data(n, bounds):
     
 def initialize_model(train_x, train_y, train_y_var, state_dict=None):
     # define models for objective and constraint
-    model = HeteroskedasticSingleTaskGP(train_x, train_y, train_y_var)
+    model = SingleTaskGP(train_x, train_y) #, train_y_var)
     mll = ExactMarginalLogLikelihood(model.likelihood, model)
 
     # load state dict if it is passed
