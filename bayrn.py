@@ -44,7 +44,7 @@ def test_policy_params(x):
 
     source_env.set_Gaussian_mean_var(means, vars)
 
-    trained_model = train(source_env, "bayrn/model/last_iteration", "ppo")
+    trained_model = train(source_env, "bayrn/model/last_iteration", "ppo", verbose=True)
 
 
     result_mean, result_std = test(trained_model, source_env, n_episodes=250)
@@ -131,7 +131,7 @@ def main():
             model.save(os.path.join(os.getcwd(),f"bayrn/best_model.ai"))
 
         book_keeping.append({
-            "params": train_x[-1].copy(),
+            "params": list(train_x[-1]),
             "outcome": t_y,
             "outcome_var": t_y_var,
             "saved_model": iteration_checkpoint_filename
@@ -168,7 +168,7 @@ def main():
             model.save(os.path.join(os.getcwd(),f"bayrn/best_model.ai"))
 
         book_keeping.append({
-            "params": train_x[-1].copy(),
+            "params": list(train_x[-1]),
             "outcome": t_y,
             "outcome_var": t_y_var,
             "saved_model": iteration_checkpoint_filename
