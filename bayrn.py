@@ -149,6 +149,7 @@ def main(args):
             book_keeping = json.load(myfile)
         
         for iteration in book_keeping:
+            print(iteration)
             train_x.append(iteration["params"])
             train_y.append(iteration["outcome"])
             train_y_var.append(iteration["outcome_var"])
