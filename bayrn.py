@@ -15,9 +15,12 @@ import warnings
 warnings.filterwarnings("ignore", category=InputDataWarning)
 
 import gym
+import os
+import json
 from stable_baselines3.common.monitor import Monitor
 from train import train
 from test import test
+import shutil
 
 #torch.set_default_dtype(torch.float64)
 
@@ -50,65 +53,8 @@ def test_policy_params(x):
     result_mean, result_std = test(trained_model, target_env, n_episodes=100)
     print(f"Results on target_env: {result_mean} +- {result_std}")
     
-    return result_mean, result_std
+    return result_mean, result_std, trained_model
 
-def main():    
-    #               m1, m2, m3, std1, std2, std3
-    lower_bounds = [0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
-    upper_bounds = [10, 10, 10, 2, 2, 2]
-    bounds = [lower_bounds, upper_bounds]
-    bounds = torch.tensor(bounds)
-
-    NUM_ITERATIONS = 100 
-
-    train_x, train_y, train_y_var = generate_initial_data(n=8, bounds=bounds)
-    best_observed = torch.max(train_y)
-
-    for iteration in range(1, NUM_ITERATIONS + 1):    
-        print("="*30)
-        print("Iteration number = ", iteration)
-        t0 = time.time()
-
-        
-        candidate = get_next_points(train_x, train_y, train_y_var, 0, bounds, 1)
-        candidate_x = candidate[0]
-        candidate_y, candidate_y_var = test_policy_params(candidate_x[0])
-
-        train_x = torch.cat([train_x, candidate_x])
-        train_y = torch.cat([train_y, torch.tensor(candidate_y).reshape(-1,1)])
-        train_y_var = torch.cat([train_y_var, torch.tensor(candidate_y_var).reshape(-1,1)])
-        best_observed = torch.max(train_y)
-
-        i = torch.argmax(train_y)
-        print(f"{train_x[i]=}")
-        print(f"{train_y[i]=}")
-
-        t = time.time()
-        print(f"Got in {t-t0} seconds")
-
-def generate_initial_data(n, bounds):
-    # generate training data   
-
-    train_x = np.zeros((n, len(bounds[0])))
-    for i in range(len(bounds[0])):
-        train_x[:, i] = np.random.uniform(bounds[0,i], bounds[1,i], n)
-
-    train_y = []
-    train_y_var = []
-
-    for i in range(n):
-        t_y, t_y_var = test_policy_params(train_x[i])
-        train_y.append(t_y)
-        train_y_var.append(t_y_var)
-
-    train_x = torch.tensor(train_x)
-    train_y = torch.tensor(train_y).reshape(-1,1)
-    train_y_var = torch.tensor(train_y_var).reshape(-1,1)
-
-
-    return train_x, train_y, train_y_var
-    
-    
 def initialize_model(train_x, train_y, train_y_var, state_dict=None):
     # define models for objective and constraint
     model = SingleTaskGP(train_x, train_y) #, train_y_var)
@@ -135,7 +81,7 @@ def get_next_points(train_x, train_y, train_y_var, best_y, bounds, n_points):
 
     fit_gpytorch_model(mll)
 
-    sampler = SobolQMCNormalSampler(1024)
+    sampler = SobolQMCNormalSampler(2048)
     qNEI = qNoisyExpectedImprovement(model, train_x, sampler)
 
     candidates = optimize_acqf(
@@ -148,6 +94,96 @@ def get_next_points(train_x, train_y, train_y_var, best_y, bounds, n_points):
 
     return candidates
 
+
+
+def main():    
+    #                m1,  m2,  m3, std1, std2, std3
+    lower_bounds = [0.1, 0.1, 0.1,  0.1,  0.1, 0.1]
+    upper_bounds = [10,   10,  10,    2,    2,   2]
+    bounds = [lower_bounds, upper_bounds]
+    bounds = torch.tensor(bounds)
+    book_keeping = []
+
+    NUM_INITIAL_POINTS = 5
+    NUM_ITERATIONS = 100 
+
+    # ======= GENERATE INITIAL TRAINING DATA =======   
+    print("="*25, "Generating initial points", "="*25)
+    train_x = np.zeros((NUM_INITIAL_POINTS, len(bounds[0])))
+    for i in range(len(bounds[0])):
+        train_x[:, i] = np.random.uniform(bounds[0,i], bounds[1,i], NUM_INITIAL_POINTS)
+
+    train_y = []
+    train_y_var = []
+    
+
+    for iteration in range(NUM_INITIAL_POINTS):
+        print("="*70)
+        print("Pre BO point num = ", iteration)
+        iteration_checkpoint_filename = f"bayrn/checkpoints/initial_point_{iteration}.ai"
+
+        t_y, t_y_var, model = test_policy_params(train_x[iteration])
+        train_y.append(t_y)
+        train_y_var.append(t_y_var)
+        
+        model.save(os.path.join(os.getcwd(), iteration_checkpoint_filename))
+        if max(train_y) == train_y[-1]:
+            model.save(os.path.join(os.getcwd(),f"bayrn/best_model.ai"))
+
+        book_keeping.append({
+            "params": train_x[-1].copy(),
+            "outcome": t_y,
+            "outcome_var": t_y_var,
+            "saved_model": iteration_checkpoint_filename
+        })
+        with open("bayrn/data.json", "w") as datafile:
+            json.dump(book_keeping, datafile)
+            
+
+    train_x = torch.tensor(train_x)
+    train_y = torch.tensor(train_y).reshape(-1,1)
+    train_y_var = torch.tensor(train_y_var).reshape(-1,1)
+
+
+    # ======= BAYESTIAN OPTIMIZATION ITERATIONS =======
+    ### TODO: SAVE MODELS AND BEST MODEL + CSV FOR DETAILS
+    print("="*25, "Start Bayesian Optimization", "="*25)
+    for iteration in range(1, NUM_ITERATIONS + 1):    
+        print("="*70)
+        print("Iteration number = ", iteration)
+        t0 = time.time()
+
+        
+        candidate = get_next_points(train_x, train_y, train_y_var, 0, bounds, 1)
+        candidate_x = candidate[0]
+        candidate_y, candidate_y_var, model = test_policy_params(candidate_x[0])
+
+        train_x = torch.cat([train_x, candidate_x])
+        train_y = torch.cat([train_y, torch.tensor(candidate_y).reshape(-1,1)])
+        train_y_var = torch.cat([train_y_var, torch.tensor(candidate_y_var).reshape(-1,1)])
+
+        iteration_checkpoint_filename = f"bayrn/checkpoints/bo_point_{iteration}.ai"
+        model.save(os.path.join(os.getcwd(), iteration_checkpoint_filename))
+        if max(train_y.tolist()) == train_y[-1]:
+            model.save(os.path.join(os.getcwd(),f"bayrn/best_model.ai"))
+
+        book_keeping.append({
+            "params": train_x[-1].copy(),
+            "outcome": t_y,
+            "outcome_var": t_y_var,
+            "saved_model": iteration_checkpoint_filename
+        })
+        with open("bayrn/data.json", "w") as datafile:
+            json.dump(book_keeping, datafile)
+
+        i = torch.argmax(train_y)
+        print(f"Best found as {i}-th point analysed")
+        print(f"With params {train_x[i]}")
+        print(f"And outcome {train_y[i]}")
+
+        t = time.time()
+        print(f"Got in {t-t0} seconds")    
+    
 
 if __name__ == "__main__":
     main()

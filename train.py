@@ -20,7 +20,7 @@ def set_seed(seed):
     if seed > 0:
         np.random.seed(seed)
 
-def train(env, model_path, algorithm="ppo", total_timesteps=500_000, es_num_evals_no_improvement=5, verbose=False):
+def train(env, model_path, algorithm="ppo", total_timesteps=500_000, eval_freq=20_000, n_eval_episodes=100, es_num_evals_no_improvement=3, verbose=False):
     
     print("Training: ", model_path)
     
@@ -31,10 +31,10 @@ def train(env, model_path, algorithm="ppo", total_timesteps=500_000, es_num_eval
     else:
         raise Exception(f"Algorithm {algorithm} unknown")
 
-    # Stop training if there is no improvement after more than 3 evaluations
+    # Stop training if there is no improvement after more than 'es_num_evals_no_improvement' evaluations
     if es_num_evals_no_improvement != -1:
         stop_train_callback = StopTrainingOnNoModelImprovement(max_no_improvement_evals=es_num_evals_no_improvement-1, min_evals=8, verbose=int(verbose))
-    eval_callback = EvalCallback(env, n_eval_episodes=20, eval_freq=10_000, verbose=int(verbose), \
+    eval_callback = EvalCallback(env, n_eval_episodes=n_eval_episodes, eval_freq=eval_freq, verbose=int(verbose), \
                                  best_model_save_path=model_path, \
                                      callback_after_eval=stop_train_callback if es_num_evals_no_improvement != -1 else None)
     
