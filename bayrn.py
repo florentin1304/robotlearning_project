@@ -137,7 +137,7 @@ def main():
             "saved_model": iteration_checkpoint_filename
         })
         with open("bayrn/data.json", "w") as datafile:
-            json.dump(book_keeping, datafile)
+            json.dump(book_keeping, datafile, indent=2)
             
 
     train_x = torch.tensor(train_x)
@@ -174,7 +174,7 @@ def main():
             "saved_model": iteration_checkpoint_filename
         })
         with open("bayrn/data.json", "w") as datafile:
-            json.dump(book_keeping, datafile)
+            json.dump(book_keeping, datafile, indent=2)
 
         i = torch.argmax(train_y)
         print(f"Best found as {i}-th point analysed")
