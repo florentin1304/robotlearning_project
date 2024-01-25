@@ -168,11 +168,12 @@ def main():
             model.save(os.path.join(os.getcwd(),f"bayrn/best_model.ai"))
 
         book_keeping.append({
-            "params": list(train_x[-1]),
-            "outcome": t_y,
-            "outcome_var": t_y_var,
+            "params": train_x[-1].tolist(),
+            "outcome": candidate_y,
+            "outcome_var": candidate_y_var,
             "saved_model": iteration_checkpoint_filename
         })
+        
         with open("bayrn/data.json", "w") as datafile:
             json.dump(book_keeping, datafile, indent=2)
 
