@@ -118,8 +118,9 @@ def main(args):
             print("="*70)
             print("Pre BO point num = ", iteration)
             iteration_checkpoint_filename = f"bayrn/checkpoints/initial_point_{iteration}.ai"
+            iteration_x = train_x[iteration]
 
-            t_y, t_y_var, model = test_policy_params(train_x[iteration])
+            t_y, t_y_var, model = test_policy_params(iteration_x)
             train_y.append(t_y)
             train_y_var.append(t_y_var)
             
@@ -128,7 +129,7 @@ def main(args):
                 model.save(os.path.join(os.getcwd(),f"bayrn/best_model.ai"))
 
             book_keeping.append({
-                "params": list(train_x[-1]),
+                "params": list(iteration_x),
                 "outcome": t_y,
                 "outcome_var": t_y_var,
                 "saved_model": iteration_checkpoint_filename
