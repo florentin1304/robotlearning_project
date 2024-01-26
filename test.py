@@ -28,11 +28,13 @@ def test(model, env, n_episodes=100):
                                     deterministic=True,
                                     render=False
                                 )
+    print(mean_reward, std_reward)
     return mean_reward, std_reward
 
 def main(args):
     set_seed(args.seed)
     env = gym.make(f'CustomHopper-{args.domain}-v0')
+    env = Monitor(env)
 
     test_log_dir = os.path.join(os.getcwd(), "test_logs")
     os.makedirs(test_log_dir, exist_ok=True)
@@ -55,7 +57,7 @@ def main(args):
     mean_reward, std_reward = test(model, env, n_episodes=args.n_episodes)
 
     print("="*35)
-    log_file_name = args.model.split("/")[-1].split(".")[0] + f"_test_on_{args.domain}" + ".txt"
+    log_file_name = args.model.split("/")[-2].split(".")[0] + f"_test_on_{args.domain}" + ".txt"
     log_file_path = os.path.join(test_log_dir, log_file_name)
     file_contents = ""
     file_contents += f"Model: {args.model}" + "\n"
