@@ -52,7 +52,12 @@ def main(args):
         raise Exception(f"Algorithm {args.algo} unknown")
     
     model_path = os.path.join(os.getcwd(), args.model)
-    model.load(model_path)
+    if args.algo.lower() == 'ppo': 
+        model = PPO.load(model_path)
+    elif args.algo.lower() == 'sac':
+        model = SAC.load(model_path)
+    else:
+        raise Exception(f"Algorithm {args.algo} unknown")
 
     mean_reward, std_reward = test(model, env, n_episodes=args.n_episodes)
 
