@@ -125,7 +125,7 @@ def main(args):
             train_y_var.append(t_y_var)
             
             model.save(os.path.join(os.getcwd(), iteration_checkpoint_filename))
-            if max(train_y) == train_y[-1]:
+            if max(train_y) == train_y[iteration]:
                 model.save(os.path.join(os.getcwd(),f"bayrn/best_model.ai"))
 
             book_keeping.append({
