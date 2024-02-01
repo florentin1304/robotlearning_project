@@ -38,7 +38,7 @@ def train(env, model_path, algorithm="ppo", total_timesteps=1_000_000, eval_freq
                                 eval_freq=eval_freq, 
                                 verbose=int(verbose), \
                                 best_model_save_path=model_path, \
-                                callback_after_eval=stop_train_callback if es_num_evals_no_improvement != -1 else None)
+                                callback_after_eval=stop_train_callback)
     
     model.learn(total_timesteps=total_timesteps, callback=eval_callback, progress_bar=True)
 
