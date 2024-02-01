@@ -8,11 +8,13 @@ import os
 from env.custom_hopper import *
 
 import argparse
+import multiprocessing
 
 from stable_baselines3 import PPO, SAC
 from stable_baselines3.common.evaluation import evaluate_policy
 
 from stable_baselines3.common.monitor import Monitor
+from stable_baselines3.common.vec_env import DummyVecEnv, SubprocVecEnv
 from stable_baselines3.common.results_plotter import load_results, ts2xy
 from stable_baselines3.common.callbacks import EvalCallback, StopTrainingOnNoModelImprovement, StopTrainingOnRewardThreshold
 
@@ -51,26 +53,35 @@ def train(env, model_path, algorithm="ppo", total_timesteps=1_000_000, eval_freq
 
     return model
 
-def main(args):
-    set_seed(args.seed)
+def make_env(args):
     env = gym.make(f'CustomHopper-{args.domain}-v0')
-    
-    run_name = f"{args.algo}_{args.domain}"
 
     if args.domain=='udr':
-        run_name += f"_{str(args.delta).replace('.', '')}{ '_perc' if args.perc else ''}"
         env.set_delta(args.delta, args.perc)
     if args.domain=='Gauss':
-        run_name += f"_{str(args.var).replace('.', '')}"
         masses = env.get_parameters()[1:]
         num_masses = len(masses)
         vars = args.var * np.ones((num_masses-1,))
         env.set_Gaussian_mean_var(masses, vars)
     
+    return env
+
+def main(args):
+    set_seed(args.seed)
+    # env = make_env(args)
+    
+    run_name = f"{args.algo}_{args.domain}"
+    if args.domain=='udr':
+        run_name += f"_{str(args.delta).replace('.', '')}{ '_perc' if args.perc else ''}"
+    if args.domain=='Gauss':
+        run_name += f"_{str(args.var).replace('.', '')}"
+
 
     log_dir = os.path.join(os.getcwd(), "train_logs")
     os.makedirs(log_dir, exist_ok=True)
-    env = Monitor(env, os.path.join(log_dir, run_name))
+
+    cpu = multiprocessing.cpu_count()
+    env = SubprocVecEnv([lambda : Monitor(make_env(args), os.path.join(log_dir, run_name+f"_{i}")) for i in range(cpu)])
 
     if args.verbose:
         print('State space:', env.observation_space)  # state-space
