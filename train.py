@@ -38,7 +38,7 @@ def train(env, model_path, algorithm="ppo", total_timesteps=1_000_000, eval_freq
     eval_callback = EvalCallback(env, 
                                 n_eval_episodes=n_eval_episodes, 
                                 eval_freq=eval_freq, 
-                                verbose=int(verbose), \
+                                verbose=1, \
                                 best_model_save_path=model_path, \
                                 callback_after_eval=stop_train_callback)
     
