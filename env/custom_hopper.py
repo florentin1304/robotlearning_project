@@ -60,18 +60,33 @@ class CustomHopper(MujocoEnv, utils.EzPickle):
                 if perc <= 0 or perc >= 1:
                     raise Exception('perc out of boundaries (0,1)')
                 for i in range(1, len(new_masses)): #start from index 1 because index 0 is torso mass
-                    lb = max(self.min_mass, new_masses[i] * (1-perc))
+                    lb = new_masses[i] * (1-perc)
                     ub = new_masses[i] * (1+perc)
+
+                    new_value = float('-inf')
+                    while new_value < self.min_mass:
+                        new_value = np.random.uniform(lb, ub)
+
                     new_masses[i] = np.random.uniform(lb, ub)
             else:
                 delta = self.delta
                 for i in range(1, len(new_masses)): #start from index 1 because index 0 is torso mass
-                    lb = max(self.min_mass, new_masses[i] - delta)
+                    lb = new_masses[i] - delta
                     ub = new_masses[i] + delta
-                    new_masses[i] = np.random.uniform(lb, ub)
+
+                    new_value = float('-inf')
+                    while new_value < self.min_mass:
+                        new_value = np.random.uniform(lb, ub)
+
+                    new_masses[i] = new_value
         elif self.mode == 'Gauss':
             for mass in range(1, len(new_masses)): #start from index 1 because index 0 is torso mass
-                new_masses[mass] = max(self.min_mass, np.random.normal( self.mean[mass-1], np.sqrt(self.var[mass-1])) )
+                
+                new_value = float('-inf')
+                while new_value < self.min_mass:
+                    new_value = np.random.normal( self.mean[mass-1], np.sqrt(self.var[mass-1]))
+
+                new_masses[mass] = new_value
 
         return new_masses
 
