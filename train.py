@@ -105,7 +105,7 @@ if __name__ == '__main__':
     parser.add_argument('--algo', default='ppo', type=str, choices=['ppo', 'sac'], help='RL Algo [ppo, sac]')
     parser.add_argument('--lr', default=0.0003, type=float, help='Learning rate')
     parser.add_argument('--gamma', default=0.99, type=float, help='Learning rate')
-    parser.add_argument('--reward_threhsold', required=False, type=float, help="Enable early stopping")
+    parser.add_argument('--reward_threshold', required=False, type=float, help="Enable early stopping")
     
     parser.add_argument('--verbose', action='store_true', help='Verbose')
     
