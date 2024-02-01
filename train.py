@@ -14,7 +14,7 @@ from stable_baselines3.common.evaluation import evaluate_policy
 
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.results_plotter import load_results, ts2xy
-from stable_baselines3.common.callbacks import EvalCallback, StopTrainingOnNoModelImprovement
+from stable_baselines3.common.callbacks import EvalCallback, StopTrainingOnNoModelImprovement, StopTrainingOnRewardThreshold
 
 def set_seed(seed):
     if seed > 0:
