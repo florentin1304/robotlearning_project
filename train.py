@@ -20,7 +20,7 @@ def set_seed(seed):
     if seed > 0:
         np.random.seed(seed)
 
-def train(env, model_path, algorithm="ppo", total_timesteps=500_000, eval_freq=20_000, n_eval_episodes=100, es_num_evals_no_improvement=3, verbose=False):
+def train(env, model_path, algorithm="ppo", total_timesteps=1_000_000, eval_freq=25_000, n_eval_episodes=100, reward_threshold=float('inf'), verbose=False):
     
     print("Training: ", model_path)
     
@@ -31,12 +31,14 @@ def train(env, model_path, algorithm="ppo", total_timesteps=500_000, eval_freq=2
     else:
         raise Exception(f"Algorithm {algorithm} unknown")
 
-    # Stop training if there is no improvement after more than 'es_num_evals_no_improvement' evaluations
-    if es_num_evals_no_improvement != -1:
-        stop_train_callback = StopTrainingOnNoModelImprovement(max_no_improvement_evals=es_num_evals_no_improvement-1, min_evals=8, verbose=int(verbose))
-    eval_callback = EvalCallback(env, n_eval_episodes=n_eval_episodes, eval_freq=eval_freq, verbose=int(verbose), \
-                                 best_model_save_path=model_path, \
-                                     callback_after_eval=stop_train_callback if es_num_evals_no_improvement != -1 else None)
+    # Stop training when the model reaches the reward threshold
+    stop_train_callback = StopTrainingOnRewardThreshold(reward_threshold=reward_threshold, verbose=1)
+    eval_callback = EvalCallback(env, 
+                                n_eval_episodes=n_eval_episodes, 
+                                eval_freq=eval_freq, 
+                                verbose=int(verbose), \
+                                best_model_save_path=model_path, \
+                                callback_after_eval=stop_train_callback if es_num_evals_no_improvement != -1 else None)
     
     model.learn(total_timesteps=total_timesteps, callback=eval_callback, progress_bar=True)
 
@@ -81,29 +83,30 @@ def main(args):
 
     model_name = run_name
     model_path = os.path.join(model_folder, model_name)
-
-    trained_model = train(env, model_path=model_path, \
+    trained_model = train(env, \
+                        model_path=model_path, \
                         algorithm=args.algo, \
                         total_timesteps=args.total_timesteps,\
-                        es_num_evals_no_improvement=args.es_num_evals_no_improvement,
+                        reward_threshold=args.reward_threshold if args.reward_threshold is not None else float('inf'),
                         verbose=args.verbose)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--seed', default=0, type=int, help='Random seed')
 
+    ### DOMAIN RANDOMIZATION PARAMETERS
     parser.add_argument("--domain", type=str, choices=['source', 'target', 'udr', "Gauss"], required=True,
                         help="Domain to use: ['source', 'target', 'udr', 'Gauss']")
     parser.add_argument("--delta", type=float, default=1.0, help="If domain=='udr', delta used for the range of randomization")
     parser.add_argument('--perc', action='store_true', help='Delta used as percentage')
-
     parser.add_argument("--var", type=float, default=1.0, help="If domain=='Gauss', vars used for the range of randomization")
 
-    parser.add_argument("--total_timesteps", type=int, default=500_000, help="The total number of samples to train on")
+    parser.add_argument("--total_timesteps", type=int, default=1_000_000, help="The total number of samples to train on")
     parser.add_argument('--algo', default='ppo', type=str, choices=['ppo', 'sac'], help='RL Algo [ppo, sac]')
     parser.add_argument('--lr', default=0.0003, type=float, help='Learning rate')
-    parser.add_argument('--es_num_evals_no_improvement', default=5, type=int, help="Enable early stopping")
-    # parser.add_argument('--gradient_steps', default=-1, type=int, help='Number of gradient steps when policy is updated in sb3 using SAC. -1 means as many as --args.now')
+    parser.add_argument('--gamma', default=0.99, type=float, help='Learning rate')
+    parser.add_argument('--reward_threhsold', required=False, type=float, help="Enable early stopping")
+    
     parser.add_argument('--verbose', action='store_true', help='Verbose')
     
     args = parser.parse_args()

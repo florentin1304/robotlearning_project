@@ -26,7 +26,7 @@ import argparse
 #torch.set_default_dtype(torch.float64)
 
 
-def test_policy_params(x):
+def test_policy_params(x, args):
     means = x[ : len(x)//2]
     vars = x[len(x)//2 : ]
 
@@ -45,16 +45,17 @@ def test_policy_params(x):
 
     source_env.set_Gaussian_mean_var(means, vars)
 
-    trained_model = train(source_env, "bayrn/model/last_iteration", "ppo")
+    #train(env, model_path, algorithm="ppo", total_timesteps=1_000_000, eval_freq=25_000, n_eval_episodes=100, reward_threshold=float('inf'), verbose=False)
+    trained_model = train(source_env, "bayrn/model/last_iteration", "ppo", reward_threhsold=args.reward_threhsold)
 
 
-    result_mean, result_std = test(trained_model, source_env, n_episodes=250)
-    print(f"Results on source_env: {result_mean} +- {result_std}")
+    source_result_mean, source_result_std = test(trained_model, source_env, n_episodes=250)
+    print(f"Results on source_env: {source_result_mean} +- {source_result_std}")
 
-    result_mean, result_std = test(trained_model, target_env, n_episodes=100)
+    result_mean, result_std = test(trained_model, target_env, n_episodes=250)
     print(f"Results on target_env: {result_mean} +- {result_std}")
     
-    return result_mean, result_std, trained_model
+    return result_mean, result_std, source_result_mean, source_result_std, trained_model
 
 def initialize_model(train_x, train_y, train_y_var, state_dict=None):
     # define models for objective and constraint
@@ -97,6 +98,9 @@ def get_next_points(train_x, train_y, train_y_var, best_y, bounds, n_points):
 
 
 def main(args):    
+    function_to_fit = lambda x: test_policy_params(x, args)
+
+
     #                m1,  m2,  m3, std1, std2, std3
     lower_bounds = [0.1, 0.1, 0.1,  0.1,  0.1, 0.1]
     upper_bounds = [10,   10,  10,    2,    2,   2]
@@ -117,10 +121,10 @@ def main(args):
         for iteration in range(args.n_init_points):
             print("="*70)
             print("Pre BO point num = ", iteration)
-            iteration_checkpoint_filename = f"bayrn/checkpoints/initial_point_{iteration}.ai"
+            iteration_checkpoint_filename = f"bayrn/checkpoints/initial_point_{iteration}{('_'+args.run_name) if args.run_name is not None else ''}.ai"
             iteration_x = train_x[iteration]
 
-            t_y, t_y_var, model = test_policy_params(iteration_x)
+            t_y, t_y_var, source_y, source_y_var, model = function_to_fit(iteration_x)
             train_y.append(t_y)
             train_y_var.append(t_y_var)
             
@@ -130,8 +134,10 @@ def main(args):
 
             book_keeping.append({
                 "params": list(iteration_x),
-                "outcome": t_y,
-                "outcome_var": t_y_var,
+                "source_outcome": source_y,
+                "source_outcome_var": source_y_var,
+                "target_outcome": t_y,
+                "target_outcome_var": t_y_var,
                 "saved_model": iteration_checkpoint_filename
             })
             with open("bayrn/data.json", "w") as datafile:
@@ -169,21 +175,23 @@ def main(args):
         
         candidate = get_next_points(train_x, train_y, train_y_var, 0, bounds, 1)
         candidate_x = candidate[0]
-        candidate_y, candidate_y_var, model = test_policy_params(candidate_x[0])
+        candidate_y, candidate_y_var, source_y, source_y_var, model = function_to_fit(candidate_x[0])
 
         train_x = torch.cat([train_x, candidate_x])
         train_y = torch.cat([train_y, torch.tensor(candidate_y).reshape(-1,1)])
         train_y_var = torch.cat([train_y_var, torch.tensor(candidate_y_var).reshape(-1,1)])
 
-        iteration_checkpoint_filename = f"bayrn/checkpoints/bo_point_{iteration}.ai"
+        iteration_checkpoint_filename = f"bayrn/checkpoints/bo_point_{iteration}{('_'+args.run_name) if args.run_name is not None else ''}.ai"
         model.save(os.path.join(os.getcwd(), iteration_checkpoint_filename))
         if max(train_y.tolist()) == train_y[-1]:
             model.save(os.path.join(os.getcwd(),f"bayrn/best_model.ai"))
 
         book_keeping.append({
             "params": train_x[-1].tolist(),
-            "outcome": candidate_y,
-            "outcome_var": candidate_y_var,
+            "source_outcome": source_y,
+            "source_outcome_var": source_y_var,
+            "target_outcome": candidate_y,
+            "target_outcome_var": candidate_y_var,
             "saved_model": iteration_checkpoint_filename
         })
         
@@ -204,8 +212,13 @@ if __name__ == "__main__":
     parser.add_argument('--seed', default=0, type=int, help='Random seed')
     parser.add_argument('--n_init_points', default=5, type=int, help='Number of initial points before BO process (if not loading)')
     parser.add_argument('--n_iterations', default=30, type=int, help='Number BO iterations')
-    parser.add_argument("--load", type=str, default="", required=False, help="Path to JSON file to load old data")
 
+    parser.add_argument('--train_reward_threshold', required=False, type=float, help='Reward threshold for early stopping')
+    parser.add_argument('--train_learning_rate', required=False, type=float, help='Training learning rate')
+    parser.add_argument('--train_gamma', required=False, type=float, help='Training model gamma')
+
+    parser.add_argument("--load", type=str, default="", required=False, help="Path to JSON file to load old data")
+    parser.add_argument("--run_name", type=str, default="", required=False, help="Extra name for models (for multiple runs)")
     parser.add_argument('--verbose', action='store_true', help='Verbose')
     
     args = parser.parse_args()
