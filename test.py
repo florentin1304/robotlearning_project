@@ -79,8 +79,15 @@ def main(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--seed', default=0, type=int, help='Random seed')
-    parser.add_argument("--domain", type=str, choices=['source', 'target', 'udr'], required=True,
-                        help="Domain to use: ['source', 'target', 'udr']")
+
+    # DOMAIN ARGUMENTS
+    parser.add_argument("--domain", type=str, choices=['source', 'target', 'udr', "Gauss"], required=True,
+                        help="Domain to use: ['source', 'target', 'udr', 'Gauss']")
+    parser.add_argument("--delta", type=float, default=1.0, help="If domain=='udr', delta used for the range of randomization")
+    parser.add_argument('--perc', action='store_true', help='Delta used as percentage')
+    parser.add_argument("--var", type=float, default=1.0, help="If domain=='Gauss', vars used for the range of randomization")
+
+    # TEST_ARGUMENTS
     parser.add_argument("--n_episodes", type=int, default=100, help="The total number of samples to train on")
     parser.add_argument('--algo', default='ppo', type=str, choices=['ppo', 'sac'], help='RL Algo [ppo, sac]')
     parser.add_argument("--model", type=str, required=True, help="Path to the testing model")
