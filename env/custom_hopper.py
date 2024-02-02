@@ -28,18 +28,30 @@ class CustomHopper(MujocoEnv, utils.EzPickle):
         TODO
         """
         if self.mode == 'udr' and self.perc is None:
-            raise Exception('must call set_delta in order to use sample_parameters()')        
+            raise Exception('must call set_udr_delta in order to use sample_parameters()')        
         if self.mode == 'Gauss' and self.mean is None:
             raise Exception('must call set_Gaussian_mean_var in order to use sample_parameters()')
         
         self.set_parameters(self.sample_parameters())
 
-    def set_delta(self, delta=1, perc=False):
+    def set_udr_delta(self, delta=1, perc=False):
         if self.mode != 'udr':
             raise Exception('wrong environment !!! You should use CustomHopper-udr-v0')
-
-        self.delta = delta
-        self.perc = perc
+        if isinstance(delta, float):
+            self.delta = delta*np.ones((3,))
+        elif isinstance(delta, np.ndarray):
+            if delta.size == 3:
+                self.delta = delta
+            else:
+                raise Exception(f"Delta size not compliant, should be 3")
+        else:
+            raise Exception(f"Delta type in set_udr_delta is not compliant {type(delta)}")
+        
+        self.perc = bool(perc)
+        if self.perc:
+            for d in self.delta:
+                if not (0 <= d <= 1):
+                    raise Exception("Deltas in percentile not in (0,1) range")
 
     def set_Gaussian_mean_var(self, mean, var):
         if self.mode != 'Gauss':
@@ -57,12 +69,9 @@ class CustomHopper(MujocoEnv, utils.EzPickle):
 
         if self.mode == 'udr':
             if self.perc :
-                perc = self.delta
-                if perc <= 0 or perc >= 1:
-                    raise Exception('perc out of boundaries (0,1)')
                 for i in range(1, len(new_masses)): #start from index 1 because index 0 is torso mass
-                    lb = new_masses[i] * (1-perc)
-                    ub = new_masses[i] * (1+perc)
+                    lb = new_masses[i] * (1-self.delta[i-1])
+                    ub = new_masses[i] * (1+self.delta[i-1])
 
                     new_value = float('-inf')
                     while new_value < self.min_mass:
@@ -70,10 +79,9 @@ class CustomHopper(MujocoEnv, utils.EzPickle):
 
                     new_masses[i] = new_value
             else:
-                delta = self.delta
                 for i in range(1, len(new_masses)): #start from index 1 because index 0 is torso mass
-                    lb = new_masses[i] - delta
-                    ub = new_masses[i] + delta
+                    lb = new_masses[i] - self.delta[i-1]
+                    ub = new_masses[i] + self.delta[i-1]
 
                     new_value = float('-inf')
                     while new_value < self.min_mass:
