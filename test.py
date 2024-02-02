@@ -15,10 +15,7 @@ from stable_baselines3.common.evaluation import evaluate_policy
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.results_plotter import load_results, ts2xy
 
-
-def set_seed(seed):
-    if seed > 0:
-        np.random.seed(seed)
+from train import set_seed
 
 def test(model, env, n_episodes=100):
     mean_reward, std_reward = evaluate_policy(
@@ -78,7 +75,7 @@ def main(args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--seed', default=0, type=int, help='Random seed')
+    parser.add_argument('--seed', default=319029_317774_310384, type=int, help='Random seed')
 
     # DOMAIN ARGUMENTS
     parser.add_argument("--domain", type=str, choices=['source', 'target', 'udr', "Gauss"], required=True,
