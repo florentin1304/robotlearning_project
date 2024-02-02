@@ -76,7 +76,7 @@ class CustomHopper(MujocoEnv, utils.EzPickle):
                     new_value = float('-inf')
                     while new_value < self.min_mass:
                         new_value = np.random.uniform(lb, ub)
-                        print(new_value, lb, ub)
+                        # print(new_value, lb, ub)
                     new_masses[i] = new_value
             else:
                 for i in range(1, len(new_masses)): #start from index 1 because index 0 is torso mass
@@ -86,7 +86,7 @@ class CustomHopper(MujocoEnv, utils.EzPickle):
                     new_value = float('-inf')
                     while new_value < self.min_mass:
                         new_value = np.random.uniform(lb, ub)
-                        print(new_value, lb, ub)
+                        # print(new_value, lb, ub)
 
                     new_masses[i] = new_value
         elif self.mode == 'Gauss':
