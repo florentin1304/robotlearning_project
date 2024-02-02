@@ -22,7 +22,8 @@ def set_seed(seed):
     if seed > 0:
         np.random.seed(seed)
 
-def train(env, model_path, algorithm="ppo", total_timesteps=1_000_000, eval_freq=25_000, n_eval_episodes=100, reward_threshold=float('inf'), verbose=False):
+def train(env, model_path, algorithm="ppo", learning_rate = 0.0003, gamma=0.99,
+           total_timesteps=1_000_000, eval_freq=25_000, n_eval_episodes=100, reward_threshold=float('inf'), verbose=False):
     
     print("Training: ", model_path)
     
@@ -42,7 +43,7 @@ def train(env, model_path, algorithm="ppo", total_timesteps=1_000_000, eval_freq
                                 best_model_save_path=model_path, \
                                 callback_after_eval=stop_train_callback)
     
-    model.learn(total_timesteps=total_timesteps, callback=eval_callback, progress_bar=True)
+    model.learn(total_timesteps=total_timesteps, learning_rate=learning_rate, gamma=gamma, callback=eval_callback, progress_bar=True)
 
     if algorithm.lower() == 'ppo': 
         model = PPO.load(os.path.join(model_path, "best_model"))
