@@ -20,6 +20,7 @@ class CustomHopper(MujocoEnv, utils.EzPickle):
         if domain == 'source':  # Source environment has an imprecise torso mass (1kg shift)
             self.sim.model.body_mass[1] -= 1.0
         
+        self.unrandomized_masses = np.copy(self.sim.model.body_mass[1:])
         self.mode = mode
 
     def set_random_parameters(self):
@@ -52,7 +53,7 @@ class CustomHopper(MujocoEnv, utils.EzPickle):
         """Sample masses according to a domain randomization distribution
         TODO
         """
-        new_masses = np.copy(self.get_parameters())
+        new_masses = np.copy(self.unrandomized_masses)
 
         if self.mode == 'udr':
             if self.perc :
@@ -68,7 +69,7 @@ class CustomHopper(MujocoEnv, utils.EzPickle):
                         print(new_value,lb,ub)
                         new_value = np.random.uniform(lb, ub)
 
-                    new_masses[i] = np.random.uniform(lb, ub)
+                    new_masses[i] = new_value
             else:
                 delta = self.delta
                 for i in range(1, len(new_masses)): #start from index 1 because index 0 is torso mass
