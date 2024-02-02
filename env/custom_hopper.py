@@ -66,7 +66,6 @@ class CustomHopper(MujocoEnv, utils.EzPickle):
 
                     new_value = float('-inf')
                     while new_value < self.min_mass:
-                        print(new_value,lb,ub)
                         new_value = np.random.uniform(lb, ub)
 
                     new_masses[i] = new_value
