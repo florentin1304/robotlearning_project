@@ -1,4 +1,0 @@
-Model: models/ppo_udr_01_perc.ai
-Domain tested on: target
-Mean reward: 127.33209884554148
-Std reward: 14.261485815189832

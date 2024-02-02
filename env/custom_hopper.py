@@ -14,14 +14,42 @@ class CustomHopper(MujocoEnv, utils.EzPickle):
     def __init__(self, domain=None, mode=None):
         MujocoEnv.__init__(self, 4)
         utils.EzPickle.__init__(self)
+        self.domain = domain
+        self.mode = mode
 
         self.original_masses = np.copy(self.sim.model.body_mass[1:])    # Default link masses
         self.min_mass = 0.1
-        if domain == 'source':  # Source environment has an imprecise torso mass (1kg shift)
+        if self.domain == 'source':  # Source environment has an imprecise torso mass (1kg shift)
             self.sim.model.body_mass[1] -= 1.0
         
         self.unrandomized_masses = np.copy(self.sim.model.body_mass[1:])
-        self.mode = mode
+
+        # self.delta = None
+        # self.perc = None
+        # self.mean = None
+        # self.vars = None
+
+    def get_name(self):
+        name = ""
+
+        if self.domain == "source":
+            if self.mode == "udr":
+                name = "udr"
+                for p in self.delta:
+                    name += "_" + str(p).replace(".", "-")
+                if self.perc:
+                    name += "_perc"
+
+            elif self.mode == "Gauss":
+                name = "gauss"
+            
+            else:
+                name = "source"
+            
+        if self.domain == "target":
+            name = "target"
+    
+        return name
 
     def set_random_parameters(self):
         """Set random masses
@@ -47,7 +75,7 @@ class CustomHopper(MujocoEnv, utils.EzPickle):
         else:
             raise Exception(f"Delta type in set_udr_delta is not compliant {type(delta)}")
         
-        self.perc = bool(perc)
+        self.perc = perc
         if self.perc:
             for d in self.delta:
                 if not (0 <= d <= 1):

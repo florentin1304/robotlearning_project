@@ -1,4 +1,0 @@
-Model: models/ppo_udr_50.ai
-Domain tested on: target
-Mean reward: 119.10053464472294
-Std reward: 13.032019163880614

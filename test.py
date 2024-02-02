@@ -28,11 +28,23 @@ def test(model, env, n_episodes=100):
     print(mean_reward, std_reward)
     return mean_reward, std_reward
 
+def make_env(args):
+    env = gym.make(f'CustomHopper-{args.domain}-v0')
+
+    if args.domain=='udr':
+        env.set_udr_delta(args.delta, args.perc)
+    if args.domain=='Gauss':
+        masses = env.get_parameters()[1:]
+        num_masses = len(masses)
+        vars = args.var * np.ones((num_masses-1,))
+        env.set_Gaussian_mean_var(masses, vars)
+    
+    return env
+
 def main(args):
     set_seed(args.seed)
-    env = gym.make(f'CustomHopper-{args.domain}-v0')
-    env = Monitor(env)
-
+    env = Monitor(make_env(args))
+    
     test_log_dir = os.path.join(os.getcwd(), "test_logs")
     os.makedirs(test_log_dir, exist_ok=True)
 
@@ -59,11 +71,11 @@ def main(args):
     mean_reward, std_reward = test(model, env, n_episodes=args.n_episodes)
 
     print("="*35)
-    log_file_name = args.model.split("/")[-2].split(".")[0] + f"_test_on_{args.domain}" + ".txt"
+    log_file_name = args.model.split("/")[-2].split(".")[0] + f"_test_on_{env.get_name()}" + ".txt"
     log_file_path = os.path.join(test_log_dir, log_file_name)
     file_contents = ""
     file_contents += f"Model: {args.model}" + "\n"
-    file_contents += f"Domain tested on: {args.domain}" + "\n"
+    file_contents += f"Domain tested on: {env.get_name() }" + "\n"
     file_contents += f"Mean reward: {mean_reward}" + "\n"
     file_contents += f"Std reward: {std_reward}"
     

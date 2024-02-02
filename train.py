@@ -23,7 +23,7 @@ def set_seed(seed):
     if seed > 0:
         
         torch.manual_seed(seed)
-        staset_global_seeds(seed)
+        set_random_seed(seed)
         np.random.seed(seed)
 
 def train(env, eval_env, model_path, algorithm="ppo", learning_rate = 0.0003, gamma=0.99,
@@ -74,25 +74,18 @@ def make_env(args):
 def main(args):
     set_seed(args.seed)
     # env = make_env(args)
-    
-    run_name = f"{args.algo}_{args.domain}"
-    if args.domain=='udr':
-        run_name += f"_{str(args.delta).replace('.', '')}{ '_perc' if args.perc else ''}"
-    if args.domain=='Gauss':
-        run_name += f"_{str(args.var).replace('.', '')}"
-
 
     log_dir = os.path.join(os.getcwd(), "train_logs")
     os.makedirs(log_dir, exist_ok=True)
-
-    eval_env = make_env(args)
-    env = Monitor(make_env(args), os.path.join(log_dir, run_name))
-
-    if args.verbose:
-        print('State space:', env.observation_space)  # state-space
-        print('Action space:', env.action_space)  # action-space
-        print('Dynamics parameters:', env.get_parameters())  # masses of each link of the Hopper
     
+    eval_env = make_env(args)
+    env = make_env(args)
+    
+    run_name = f"{args.algo}_{env.get_name()}"
+
+    eval_env = Monitor(eval_env)
+    env = Monitor(env, os.path.join(log_dir, run_name))
+
     model_folder = "models"
     model_folder = os.path.join(os.getcwd(), model_folder)
     os.makedirs(model_folder, exist_ok=True)
