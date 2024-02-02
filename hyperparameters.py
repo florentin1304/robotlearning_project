@@ -49,7 +49,7 @@ if __name__ == "__main__":
     
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--seed', default=319029_317774_310384, type=int, help='Random seed')
+    parser.add_argument('--seed', default=319029, type=int, help='Random seed')
 
     parser.add_argument("--domain", type=str, choices=['source', 'target'], required=True,
                         help="Domain to use: ['source', 'target']")

@@ -13,7 +13,7 @@ import multiprocessing
 from stable_baselines3 import PPO, SAC
 from stable_baselines3.common.evaluation import evaluate_policy
 
-from stable_baselines3.common import staset_global_seeds
+from stable_baselines3.common.utils import set_random_seed
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.vec_env import DummyVecEnv, SubprocVecEnv, VecMonitor
 from stable_baselines3.common.results_plotter import load_results, ts2xy
@@ -109,7 +109,7 @@ def main(args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--seed', default=319029_317774_310384, type=int, help='Random seed')
+    parser.add_argument('--seed', default=319029, type=int, help='Random seed')
 
     ### DOMAIN RANDOMIZATION PARAMETERS
     parser.add_argument("--domain", type=str, choices=['source', 'target', 'udr', "Gauss"], required=True,
