@@ -57,7 +57,8 @@ def make_env(args):
     env = gym.make(f'CustomHopper-{args.domain}-v0')
 
     if args.domain=='udr':
-        env.set_udr_delta(args.delta, args.perc)
+        # env.set_udr_delta(args.delta, args.perc)
+        env.set_udr_delta(np.array([1,2,3]), args.perc)
     if args.domain=='Gauss':
         masses = env.get_parameters()[1:]
         num_masses = len(masses)
