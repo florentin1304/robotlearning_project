@@ -13,8 +13,11 @@ from env.custom_hopper import *
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.vec_env import DummyVecEnv, SubprocVecEnv
 from stable_baselines3.common.utils import get_linear_fn, constant_fn
+
+from utils import get_step_scheduler
+
 def main(args):
-    lrs = [0.003, 0.0003, 0.00003, "scheduler"]
+    lrs = ["lin_scheduler", "step_scheduler", "exp_scheduler", 0.003, 0.0003, 0.00003]
     gammas = [0.99, 0.90, 0.75, 0.5]
 
     for lr in lrs:
@@ -35,8 +38,10 @@ def main(args):
             model_name = run_name
             model_path = os.path.join(model_folder, model_name)
 
-            if lr == "scheduler":
-                my_lr = get_linear_fn(0.003, 0.00003, 0.3)
+            if lr == "lin_scheduler":
+                my_lr = get_linear_fn(0.003, 0.00003, 0.25)
+            elif lr == "step_scheduler":
+                my_lr = get_step_scheduler(0.003, 0.1, 0.25)
             else:
                 my_lr = constant_fn(lr)
 
