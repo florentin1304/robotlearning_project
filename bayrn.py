@@ -50,7 +50,7 @@ def test_policy_params(x, args):
     exponential_learning_rate = get_exp_scheduler(0.003, 0.00003)
     trained_model = train(source_env, source_env_eval, "bayrn/model/last_iteration",\
                             total_timesteps=args.train_total_timesteps,\
-                            reward_threhsold=args.train_reward_threshold,\
+                            reward_threshold=args.train_reward_threshold,\
                             learning_rate=exponential_learning_rate,
                             gamma=0.99)
 
