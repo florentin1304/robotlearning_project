@@ -14,12 +14,12 @@ from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.vec_env import DummyVecEnv, SubprocVecEnv
 
 def main(args):
-    set_seed(args.seed)
     lrs = [0.03, 0.003, 0.0003, 0.00003]
     gammas = [0.99, 0.90, 0.75, 0.5]
 
     for lr in lrs:
         for gamma in gammas:
+            set_seed(args.seed)
             run_name = f"{args.algo}_{args.domain}_lr{lr}_gamma{gamma}"
             proc_path = os.path.join(os.getcwd(), "hyperparams_tuning")    
             log_dir = os.path.join(proc_path, "logs")
@@ -57,7 +57,9 @@ if __name__ == "__main__":
     parser.add_argument("--total_timesteps", type=int, default=1_000_000, help="The total number of samples to train on")
     parser.add_argument('--algo', default='ppo', type=str, choices=['ppo', 'sac'], help='RL Algo [ppo, sac]')
     parser.add_argument('--reward_threshold', required=False, type=float, help="Enable early stopping")
+    parser.add_argument('--verbose', action='store_true', help='Verbose')
     
     args = parser.parse_args()
+
     main(args)
     
