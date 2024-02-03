@@ -14,7 +14,7 @@ from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.vec_env import DummyVecEnv, SubprocVecEnv
 from stable_baselines3.common.utils import get_linear_fn, constant_fn
 
-from utils import get_step_scheduler
+from utils import get_step_scheduler, get_exp_scheduler
 
 def main(args):
     lrs = ["lin_scheduler", "step_scheduler", "exp_scheduler", 0.003, 0.0003, 0.00003]
@@ -39,9 +39,9 @@ def main(args):
             model_path = os.path.join(model_folder, model_name)
 
             if lr == "lin_scheduler":
-                my_lr = get_linear_fn(0.003, 0.00003, 0.25)
+                my_lr = get_linear_fn(0.003, 0.00003, 0.01)
             elif lr == "step_scheduler":
-                my_lr = get_step_scheduler(0.003, 0.1, 0.25)      
+                my_lr = get_step_scheduler(0.003, 0.5, 0.2)      
             elif lr == "exp_scheduler":
                 my_lr = get_exp_scheduler(0.003, 0.00003)
             else:
@@ -60,6 +60,26 @@ def main(args):
                         reward_threshold=args.reward_threshold if args.reward_threshold is not None else float('inf'),
                         verbose=args.verbose)
 
+            test_log_dir = os.path.join(proc_path, "test_logs")
+            os.makedirs(test_log_dir, exist_ok=True)
+
+            mean_reward, std_reward = test(model, env, n_episodes=args.n_episodes)
+
+            print("="*35)
+            log_file_name = run_name + ".txt"
+            log_file_path = os.path.join(test_log_dir, log_file_name)
+            file_contents = ""
+            file_contents += f"Model: {run_name}" + "\n"
+            file_contents += f"Domain tested on: {env.get_name() }" + "\n"
+            file_contents += f"Mean reward: {mean_reward}" + "\n"
+            file_contents += f"Std reward: {std_reward}"
+            
+            with open(log_file_path, "w") as f:
+                f.write(file_contents)
+            
+            print("="*30)
+            print(file_contents)
+
 
 if __name__ == "__main__":
     
@@ -70,7 +90,7 @@ if __name__ == "__main__":
     parser.add_argument("--domain", type=str, choices=['source', 'target'], required=True,
                         help="Domain to use: ['source', 'target']")
     
-    parser.add_argument("--total_timesteps", type=int, default=1_000_000, help="The total number of samples to train on")
+    parser.add_argument("--total_timesteps", type=int, default=1_00_000, help="The total number of samples to train on")
     parser.add_argument('--algo', default='ppo', type=str, choices=['ppo', 'sac'], help='RL Algo [ppo, sac]')
     parser.add_argument('--reward_threshold', required=False, type=float, help="Enable early stopping")
     parser.add_argument('--verbose', action='store_true', help='Verbose')
