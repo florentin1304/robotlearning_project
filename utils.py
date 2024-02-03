@@ -3,7 +3,7 @@
 def get_step_scheduler(start, alpha, every_perc):
     def func(progress_remaining):
         progress_done = 1 - progress_remaining
-        num_steps = 1 + (progress_done//every_perc)
+        num_steps = (progress_done//every_perc)
         lr = start * (alpha**num_steps)
 
         return lr
