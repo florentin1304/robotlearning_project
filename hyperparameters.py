@@ -41,7 +41,9 @@ def main(args):
             if lr == "lin_scheduler":
                 my_lr = get_linear_fn(0.003, 0.00003, 0.25)
             elif lr == "step_scheduler":
-                my_lr = get_step_scheduler(0.003, 0.1, 0.25)
+                my_lr = get_step_scheduler(0.003, 0.1, 0.25)      
+            elif lr == "exp_scheduler":
+                my_lr = get_exp_scheduler(0.003, 0.00003)
             else:
                 my_lr = constant_fn(lr)
 
