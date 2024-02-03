@@ -63,7 +63,7 @@ def main(args):
             test_log_dir = os.path.join(proc_path, "test_logs")
             os.makedirs(test_log_dir, exist_ok=True)
 
-            mean_reward, std_reward = test(trained_model, env, n_episodes=args.n_episodes)
+            mean_reward, std_reward = test(trained_model, env, n_episodes=100)
 
             print("="*35)
             log_file_name = run_name + ".txt"
