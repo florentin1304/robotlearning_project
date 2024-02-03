@@ -1,0 +1,4 @@
+Model: ppo_source_lr0.003_gamma0.5
+Domain tested on: source
+Mean reward: 344.11017308999993
+Std reward: 38.35319515840154

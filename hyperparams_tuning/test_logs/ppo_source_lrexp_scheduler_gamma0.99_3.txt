@@ -1,0 +1,4 @@
+Model: ppo_source_lrexp_scheduler_gamma0.99_3
+Domain tested on: source
+Mean reward: 1708.05311206
+Std reward: 67.11914434101331
