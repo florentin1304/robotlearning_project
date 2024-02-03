@@ -90,7 +90,7 @@ if __name__ == "__main__":
     parser.add_argument("--domain", type=str, choices=['source', 'target'], required=True,
                         help="Domain to use: ['source', 'target']")
     
-    parser.add_argument("--total_timesteps", type=int, default=1_00_000, help="The total number of samples to train on")
+    parser.add_argument("--total_timesteps", type=int, default=1_000_000, help="The total number of samples to train on")
     parser.add_argument('--algo', default='ppo', type=str, choices=['ppo', 'sac'], help='RL Algo [ppo, sac]')
     parser.add_argument('--reward_threshold', required=False, type=float, help="Enable early stopping")
     parser.add_argument('--verbose', action='store_true', help='Verbose')
