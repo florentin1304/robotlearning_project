@@ -19,6 +19,8 @@ from stable_baselines3.common.vec_env import DummyVecEnv, SubprocVecEnv, VecMoni
 from stable_baselines3.common.results_plotter import load_results, ts2xy
 from stable_baselines3.common.callbacks import EvalCallback, StopTrainingOnNoModelImprovement, StopTrainingOnRewardThreshold
 
+from utils import get_exp_scheduler
+
 def set_seed(seed):
     if seed > 0:
         
@@ -92,10 +94,14 @@ def main(args):
 
     model_name = run_name
     model_path = os.path.join(model_folder, model_name)
+
+    exponential_learning_rate = get_exp_scheduler(0.003, 0.00003)
     trained_model = train(env, \
                         eval_env, \
                         model_path=model_path, \
                         algorithm=args.algo, \
+                        learning_rate = exponential_learning_rate, \
+                        gamma=0.99,\
                         total_timesteps=args.total_timesteps,\
                         reward_threshold=args.reward_threshold if args.reward_threshold is not None else float('inf'),
                         verbose=args.verbose)
