@@ -177,6 +177,7 @@ def generate_initial_data(args, function_to_fit, bounds):
 
 
 def main(args):    
+    set_seed(args.seed)
     function_to_fit = lambda x: test_policy_params(x, args)
 
     #                m1,  m2,  m3, std1, std2, std3
