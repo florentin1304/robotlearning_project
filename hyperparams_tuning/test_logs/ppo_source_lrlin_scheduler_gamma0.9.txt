@@ -1,0 +1,4 @@
+Model: ppo_source_lrlin_scheduler_gamma0.9
+Domain tested on: source
+Mean reward: 980.2040144700003
+Std reward: 314.1436644304947

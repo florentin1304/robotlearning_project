@@ -17,7 +17,7 @@ from stable_baselines3.common.utils import get_linear_fn, constant_fn
 from utils import get_step_scheduler, get_exp_scheduler
 
 def main(args):
-    lrs = ["lin_scheduler", "step_scheduler", "exp_scheduler", 0.003, 0.0003, 0.00003]
+    lrs = ["step_scheduler", "exp_scheduler", "lin_scheduler", 0.003, 0.0003, 0.00003]
     gammas = [0.99, 0.90, 0.75, 0.5]
 
     for lr in lrs:
