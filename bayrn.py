@@ -35,7 +35,11 @@ def test_policy_params(x, args):
     print(f"Start training with \nMeans: {means} \nVars: {vars}")
 
     source_env =  Monitor(gym.make(f'CustomHopper-Gauss-v0'))
+    source_env.set_Gaussian_mean_var(means, vars)
+
     source_env_eval =  Monitor(gym.make(f'CustomHopper-Gauss-v0'))
+    source_env_eval.set_Gaussian_mean_var(means, vars)
+
     target_env = Monitor(gym.make(f'CustomHopper-target-v0'))
 
     ### (!!!) Doesn't touch masses[0] inside 
@@ -43,7 +47,6 @@ def test_policy_params(x, args):
     num_masses = len(masses)
     assert len(means) == num_masses-1 
 
-    source_env.set_Gaussian_mean_var(means, vars)
 
     #train(env, eval_env, model_path, algorithm="ppo", learning_rate = 0.0003, gamma=0.99,
     #       total_timesteps=1_000_000, eval_freq=25_000, n_eval_episodes=100, reward_threshold=float('inf'), verbose=False):
