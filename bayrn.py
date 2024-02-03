@@ -229,7 +229,7 @@ if __name__ == "__main__":
     parser.add_argument('--n_iterations', default=30, type=int, help='Number BO iterations')
 
     parser.add_argument('--train_reward_threshold', required=False, type=float, help='Reward threshold for early stopping')
-    parser.add_argument('--train_total_timesteps', required=False, type=int, help='Total timesteps per training')
+    parser.add_argument('--train_total_timesteps', required=False, default=1_000_000, type=int, help='Total timesteps per training')
 
     parser.add_argument("--load", type=str, default="", required=False, help="Path to JSON file to load old data")
     parser.add_argument("--run_name", type=str, default="", required=False, help="Extra name for models (for multiple runs)")
