@@ -178,9 +178,9 @@ def main(args):
     set_seed(args.seed)
     function_to_fit = lambda x: test_policy_params(x, args)
 
-    #                m1,  m2,  m3, std1, std2, std3
+    #                m1,  m2,  m3, var1, var2, var3
     lower_bounds = [0.1, 0.1, 0.1,  0.1,  0.1, 0.1]
-    upper_bounds = [10,   10,  10,    2,    2,   2]
+    upper_bounds = [10,   10,  10,  6.5,  6.5, 6.5]
     bounds = [lower_bounds, upper_bounds]
     bounds = torch.tensor(bounds)
 
