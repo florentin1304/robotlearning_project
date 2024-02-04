@@ -1,0 +1,4 @@
+Model: models/ppo_source/best_model
+Domain tested on: target
+Mean reward: 1019.236116532
+Std reward: 183.38932676720862

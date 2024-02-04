@@ -78,16 +78,14 @@ def initialize_model(train_x, train_y, train_y_var, state_dict=None):
     return mll, model
 
 def get_next_points(train_x, train_y, train_y_var, best_y, bounds, n_points):    
-    train_x_mean = torch.mean(train_x, dim=0)
-    train_x_std = torch.std(train_x, dim=0)
-    train_x = (train_x-train_x_mean)/train_x_std
+    # Standardized or not ? I guess not
+    # train_x_mean = torch.mean(train_x, dim=0)
+    # train_x_std = torch.std(train_x, dim=0)
+    # train_x = (train_x-train_x_mean)/train_x_std
+    # train_y_mean = torch.mean(train_y, dim=0)
+    # train_y_std = torch.std(train_y, dim=0)
+    # train_y = (train_y-train_y_mean)/train_y_std
 
-
-    train_y_mean = torch.mean(train_y, dim=0)
-    train_y_std = torch.std(train_y, dim=0)
-    train_y = (train_y-train_y_mean)/train_y_std
-
-    
     mll, model = initialize_model(train_x, train_y, train_y_var)
 
     fit_gpytorch_model(mll)

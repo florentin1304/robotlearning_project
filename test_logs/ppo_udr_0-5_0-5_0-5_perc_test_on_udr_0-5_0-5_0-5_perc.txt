@@ -1,0 +1,4 @@
+Model: models/ppo_udr_0-5_0-5_0-5_perc/best_model
+Domain tested on: udr_0-5_0-5_0-5_perc
+Mean reward: 1512.685636782
+Std reward: 266.984886158736
