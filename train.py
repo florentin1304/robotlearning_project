@@ -75,7 +75,6 @@ def make_env(args):
 
 def main(args):
     set_seed(args.seed)
-    # env = make_env(args)
 
     log_dir = os.path.join(os.getcwd(), "train_logs")
     os.makedirs(log_dir, exist_ok=True)
