@@ -25,7 +25,6 @@ def test(model, env, n_episodes=100):
                                     deterministic=True,
                                     render=False
                                 )
-    print(mean_reward, std_reward)
     return mean_reward, std_reward
 
 def make_env(args):
