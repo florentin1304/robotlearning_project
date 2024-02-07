@@ -1,0 +1,650 @@
+[
+  {
+    "params": [
+      1.2258892901950456,
+      4.469529251544344,
+      2.754310622746812
+    ],
+    "source_outcome": 1422.305138976,
+    "source_outcome_var": 166.33086928685285,
+    "target_outcome": 1325.32995676,
+    "target_outcome_var": 151.06273477155972,
+    "saved_model": "bayrn_udr/checkpoints/initial_point_0_.ai"
+  },
+  {
+    "params": [
+      0.5809821107341654,
+      0.2719864474171688,
+      2.330228736549502
+    ],
+    "source_outcome": 1587.200517032,
+    "source_outcome_var": 153.58070119347713,
+    "target_outcome": 968.793188904,
+    "target_outcome_var": 164.39991779572054,
+    "saved_model": "bayrn_udr/checkpoints/initial_point_1_.ai"
+  },
+  {
+    "params": [
+      2.997906158489899,
+      4.931253951185772,
+      0.9863797574579741
+    ],
+    "source_outcome": 1461.858213324,
+    "source_outcome_var": 258.7807900319836,
+    "target_outcome": 1646.2355971360003,
+    "target_outcome_var": 85.71083774082132,
+    "saved_model": "bayrn_udr/checkpoints/initial_point_2_.ai"
+  },
+  {
+    "params": [
+      2.5863032115108693,
+      1.0960935752513872,
+      2.2360242753534463
+    ],
+    "source_outcome": 1348.708122552,
+    "source_outcome_var": 261.77928857884336,
+    "target_outcome": 1139.1900946359997,
+    "target_outcome_var": 87.74170054291102,
+    "saved_model": "bayrn_udr/checkpoints/initial_point_3_.ai"
+  },
+  {
+    "params": [
+      1.179434511042053,
+      0.45088238440847195,
+      3.7014446035149597
+    ],
+    "source_outcome": 1433.5739378479998,
+    "source_outcome_var": 139.79040505674644,
+    "target_outcome": 1370.314466228,
+    "target_outcome_var": 207.83078336773121,
+    "saved_model": "bayrn_udr/checkpoints/initial_point_4_.ai"
+  },
+  {
+    "params": [
+      0.8694999814033508,
+      1.7436832189559937,
+      0.3330056071281433
+    ],
+    "source_outcome": 1380.664146764,
+    "source_outcome_var": 253.64778646157012,
+    "target_outcome": 786.2799769439999,
+    "target_outcome_var": 78.54236391475298,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_1_.ai"
+  },
+  {
+    "params": [
+      1.7898657321929932,
+      0.18000121414661407,
+      2.2884490489959717
+    ],
+    "source_outcome": 1436.1418479840002,
+    "source_outcome_var": 260.9227710716084,
+    "target_outcome": 999.9984485320001,
+    "target_outcome_var": 56.19511144388435,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_2_.ai"
+  },
+  {
+    "params": [
+      2.352724313735962,
+      1.6514204740524292,
+      4.893285274505615
+    ],
+    "source_outcome": 1471.078346748,
+    "source_outcome_var": 317.25979624592094,
+    "target_outcome": 1006.304244596,
+    "target_outcome_var": 45.475023376022165,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_3_.ai"
+  },
+  {
+    "params": [
+      2.750005006790161,
+      1.0025562047958374,
+      0.740723729133606
+    ],
+    "source_outcome": 1456.7338628159998,
+    "source_outcome_var": 177.3766185301264,
+    "target_outcome": 1360.0679458920001,
+    "target_outcome_var": 154.27902981870392,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_4_.ai"
+  },
+  {
+    "params": [
+      3.7223496437072754,
+      3.7475802898406982,
+      3.7817254066467285
+    ],
+    "source_outcome": 1322.074879788,
+    "source_outcome_var": 310.3180375483588,
+    "target_outcome": 1472.5773881280002,
+    "target_outcome_var": 237.64075148566184,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_5_.ai"
+  },
+  {
+    "params": [
+      4.836545467376709,
+      3.323728322982788,
+      0.6870513558387756
+    ],
+    "source_outcome": 1460.80507086,
+    "source_outcome_var": 288.0445337199849,
+    "target_outcome": 1218.1843831560002,
+    "target_outcome_var": 313.6802301510421,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_6_.ai"
+  },
+  {
+    "params": [
+      0.14503361284732819,
+      4.034438133239746,
+      2.8955907821655273
+    ],
+    "source_outcome": 1463.36778748,
+    "source_outcome_var": 180.35529412345417,
+    "target_outcome": 1551.795886868,
+    "target_outcome_var": 84.8637340917302,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_7_.ai"
+  },
+  {
+    "params": [
+      3.7131123542785645,
+      1.3107997179031372,
+      1.1701314449310303
+    ],
+    "source_outcome": 1240.878512176,
+    "source_outcome_var": 304.7985089171057,
+    "target_outcome": 966.138259104,
+    "target_outcome_var": 27.949109108565093,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_8_.ai"
+  },
+  {
+    "params": [
+      2.4909579753875732,
+      2.9677276611328125,
+      3.134138822555542
+    ],
+    "source_outcome": 1491.9680608400001,
+    "source_outcome_var": 268.9815011618971,
+    "target_outcome": 1069.209586116,
+    "target_outcome_var": 41.42148756044834,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_9_.ai"
+  },
+  {
+    "params": [
+      1.4026545286178589,
+      1.7014334201812744,
+      0.996020495891571
+    ],
+    "source_outcome": 1290.50873826,
+    "source_outcome_var": 337.59001006484317,
+    "target_outcome": 909.743637308,
+    "target_outcome_var": 102.21973730952612,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_10_.ai"
+  },
+  {
+    "params": [
+      0.8532961010932922,
+      2.761246681213379,
+      4.068854331970215
+    ],
+    "source_outcome": 1494.545619832,
+    "source_outcome_var": 270.74327861760884,
+    "target_outcome": 1004.43545094,
+    "target_outcome_var": 140.50641946385002,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_11_.ai"
+  },
+  {
+    "params": [
+      4.359545707702637,
+      4.898639678955078,
+      3.54375958442688
+    ],
+    "source_outcome": 1150.107951256,
+    "source_outcome_var": 350.1215511848493,
+    "target_outcome": 882.5409720439999,
+    "target_outcome_var": 147.01341404533122,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_12_.ai"
+  },
+  {
+    "params": [
+      1.3125394582748413,
+      1.298380970954895,
+      3.4708118438720703
+    ],
+    "source_outcome": 1524.8495509600002,
+    "source_outcome_var": 243.05826642364295,
+    "target_outcome": 1518.358385604,
+    "target_outcome_var": 220.39253843925135,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_13_.ai"
+  },
+  {
+    "params": [
+      3.746281147003174,
+      0.4117768108844757,
+      1.5567817687988281
+    ],
+    "source_outcome": 1347.8806905160002,
+    "source_outcome_var": 255.39688859461558,
+    "target_outcome": 1076.361184248,
+    "target_outcome_var": 152.2497276852344,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_14_.ai"
+  },
+  {
+    "params": [
+      3.266807794570923,
+      0.3631371557712555,
+      0.7416239380836487
+    ],
+    "source_outcome": 1407.0148879120002,
+    "source_outcome_var": 349.77778558567235,
+    "target_outcome": 1361.891864988,
+    "target_outcome_var": 311.5082408220604,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_15_.ai"
+  },
+  {
+    "params": [
+      3.4265828132629395,
+      0.5406531691551208,
+      2.3269381523132324
+    ],
+    "source_outcome": 1599.3884194720001,
+    "source_outcome_var": 222.36514640224866,
+    "target_outcome": 1700.458037804,
+    "target_outcome_var": 144.8690608296952,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_16_.ai"
+  },
+  {
+    "params": [
+      4.714656352996826,
+      2.21807861328125,
+      0.4563726484775543
+    ],
+    "source_outcome": 1187.1125967799999,
+    "source_outcome_var": 244.6121229737325,
+    "target_outcome": 1083.007829156,
+    "target_outcome_var": 35.611744784577176,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_17_.ai"
+  },
+  {
+    "params": [
+      4.950577259063721,
+      3.3183348178863525,
+      2.853790521621704
+    ],
+    "source_outcome": 1275.2907132999999,
+    "source_outcome_var": 323.4823196931214,
+    "target_outcome": 1396.081923552,
+    "target_outcome_var": 190.45141984760053,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_18_.ai"
+  },
+  {
+    "params": [
+      2.1202340126037598,
+      2.7325780391693115,
+      3.6757616996765137
+    ],
+    "source_outcome": 1213.6274406920002,
+    "source_outcome_var": 281.57640953302274,
+    "target_outcome": 1282.110045956,
+    "target_outcome_var": 214.58739130938466,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_19_.ai"
+  },
+  {
+    "params": [
+      1.624010443687439,
+      3.975179433822632,
+      3.765305757522583
+    ],
+    "source_outcome": 1309.7320478599997,
+    "source_outcome_var": 274.8066535046357,
+    "target_outcome": 898.0177611839999,
+    "target_outcome_var": 60.533811764865995,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_20_.ai"
+  },
+  {
+    "params": [
+      0.24627599120140076,
+      1.8440473079681396,
+      0.4198439121246338
+    ],
+    "source_outcome": 1556.2281516,
+    "source_outcome_var": 226.06241890760484,
+    "target_outcome": 812.9894028960001,
+    "target_outcome_var": 110.32364870203764,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_21_.ai"
+  },
+  {
+    "params": [
+      1.2888915538787842,
+      2.310879945755005,
+      4.669318199157715
+    ],
+    "source_outcome": 1312.8041296080003,
+    "source_outcome_var": 332.0764599720326,
+    "target_outcome": 1524.8638874320002,
+    "target_outcome_var": 121.06520132294543,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_22_.ai"
+  },
+  {
+    "params": [
+      4.708396911621094,
+      1.8509882688522339,
+      0.6404190063476562
+    ],
+    "source_outcome": 1336.1572569960001,
+    "source_outcome_var": 245.01744320113173,
+    "target_outcome": 1625.2228198520002,
+    "target_outcome_var": 50.8429819133193,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_23_.ai"
+  },
+  {
+    "params": [
+      2.8805387020111084,
+      4.396673679351807,
+      0.9688895344734192
+    ],
+    "source_outcome": 1453.70123244,
+    "source_outcome_var": 280.57889502104325,
+    "target_outcome": 1511.668368668,
+    "target_outcome_var": 220.01043681581788,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_24_.ai"
+  },
+  {
+    "params": [
+      1.4598325490951538,
+      2.856938362121582,
+      0.13912078738212585
+    ],
+    "source_outcome": 1421.979530492,
+    "source_outcome_var": 226.9861433711476,
+    "target_outcome": 1162.56064258,
+    "target_outcome_var": 363.9729883914343,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_25_.ai"
+  },
+  {
+    "params": [
+      3.1911814212799072,
+      0.2939179837703705,
+      4.005288600921631
+    ],
+    "source_outcome": 1246.955753312,
+    "source_outcome_var": 206.43443132130838,
+    "target_outcome": 1461.7521133280002,
+    "target_outcome_var": 40.42006327514908,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_26_.ai"
+  },
+  {
+    "params": [
+      2.501554489135742,
+      0.12924931943416595,
+      3.0555925369262695
+    ],
+    "source_outcome": 1237.045197204,
+    "source_outcome_var": 241.35896212204239,
+    "target_outcome": 916.189610956,
+    "target_outcome_var": 15.445784433753719,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_27_.ai"
+  },
+  {
+    "params": [
+      3.3483214378356934,
+      0.44493040442466736,
+      3.4227051734924316
+    ],
+    "source_outcome": 1395.41981754,
+    "source_outcome_var": 316.51676734351975,
+    "target_outcome": 1159.765322264,
+    "target_outcome_var": 180.09531509209668,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_28_.ai"
+  },
+  {
+    "params": [
+      3.3623228073120117,
+      0.681776762008667,
+      4.802439212799072
+    ],
+    "source_outcome": 1401.909814396,
+    "source_outcome_var": 334.4597822383159,
+    "target_outcome": 1610.937476784,
+    "target_outcome_var": 138.86802246157123,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_29_.ai"
+  },
+  {
+    "params": [
+      2.5095391273498535,
+      2.367149829864502,
+      0.7078080177307129
+    ],
+    "source_outcome": 1649.1760863839997,
+    "source_outcome_var": 122.63074565384942,
+    "target_outcome": 1714.2556467279999,
+    "target_outcome_var": 50.26984643265883,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_30_.ai"
+  },
+  {
+    "params": [
+      3.3126416206359863,
+      3.48268723487854,
+      4.620179176330566
+    ],
+    "source_outcome": 1097.5808394760002,
+    "source_outcome_var": 400.86660151046067,
+    "target_outcome": 1040.697321428,
+    "target_outcome_var": 183.20884501095708,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_31_.ai"
+  },
+  {
+    "params": [
+      2.8364853858947754,
+      1.2192869186401367,
+      2.571136713027954
+    ],
+    "source_outcome": 1448.6103546799998,
+    "source_outcome_var": 352.34727536893564,
+    "target_outcome": 1096.2437977,
+    "target_outcome_var": 247.23881109204214,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_32_.ai"
+  },
+  {
+    "params": [
+      3.6611900329589844,
+      3.4413702487945557,
+      1.0864139795303345
+    ],
+    "source_outcome": 1419.787589804,
+    "source_outcome_var": 174.9110670722331,
+    "target_outcome": 1588.681000612,
+    "target_outcome_var": 70.88712585180468,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_33_.ai"
+  },
+  {
+    "params": [
+      1.8616646528244019,
+      2.825866937637329,
+      3.094463348388672
+    ],
+    "source_outcome": 1504.828015588,
+    "source_outcome_var": 247.9131501395043,
+    "target_outcome": 1620.2383103319999,
+    "target_outcome_var": 177.48127316997503,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_34_.ai"
+  },
+  {
+    "params": [
+      2.8189632892608643,
+      3.1146316528320312,
+      1.6724399328231812
+    ],
+    "source_outcome": 1411.3897884280002,
+    "source_outcome_var": 245.30132351155723,
+    "target_outcome": 1383.8341135800001,
+    "target_outcome_var": 283.3276932741528,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_35_.ai"
+  },
+  {
+    "params": [
+      1.570074200630188,
+      4.649963855743408,
+      4.46873664855957
+    ],
+    "source_outcome": 1372.487807508,
+    "source_outcome_var": 295.0033870873886,
+    "target_outcome": 1321.9243905839999,
+    "target_outcome_var": 252.92630264297694,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_36_.ai"
+  },
+  {
+    "params": [
+      4.040646076202393,
+      3.1923184394836426,
+      2.0932469367980957
+    ],
+    "source_outcome": 1345.014691088,
+    "source_outcome_var": 322.52042397139564,
+    "target_outcome": 1047.1768526600001,
+    "target_outcome_var": 7.839883179383326,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_37_.ai"
+  },
+  {
+    "params": [
+      4.130738735198975,
+      0.7756971120834351,
+      2.858898401260376
+    ],
+    "source_outcome": 1373.6953332120002,
+    "source_outcome_var": 290.84310401758074,
+    "target_outcome": 1171.4331844,
+    "target_outcome_var": 214.7113485319624,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_38_.ai"
+  },
+  {
+    "params": [
+      4.333806037902832,
+      2.9033539295196533,
+      3.731276750564575
+    ],
+    "source_outcome": 1379.621607756,
+    "source_outcome_var": 282.258224500996,
+    "target_outcome": 1444.111759812,
+    "target_outcome_var": 279.4651452743786,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_39_.ai"
+  },
+  {
+    "params": [
+      3.991952419281006,
+      1.8442614078521729,
+      1.114608883857727
+    ],
+    "source_outcome": 1478.239170356,
+    "source_outcome_var": 293.73695588600526,
+    "target_outcome": 1538.54415782,
+    "target_outcome_var": 140.978491082201,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_40_.ai"
+  },
+  {
+    "params": [
+      1.129960298538208,
+      1.7133517265319824,
+      2.6429333686828613
+    ],
+    "source_outcome": 1654.9429430720002,
+    "source_outcome_var": 168.7066274551191,
+    "target_outcome": 1627.5029446800002,
+    "target_outcome_var": 172.12782341494292,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_41_.ai"
+  },
+  {
+    "params": [
+      4.186032772064209,
+      2.1212685108184814,
+      3.7102344036102295
+    ],
+    "source_outcome": 1349.2646670479999,
+    "source_outcome_var": 336.2329779729476,
+    "target_outcome": 1581.852020944,
+    "target_outcome_var": 222.21906888024998,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_42_.ai"
+  },
+  {
+    "params": [
+      2.8528614044189453,
+      3.263552188873291,
+      1.1587738990783691
+    ],
+    "source_outcome": 1389.9743821,
+    "source_outcome_var": 277.00246480268714,
+    "target_outcome": 1250.521254024,
+    "target_outcome_var": 259.1052123537198,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_43_.ai"
+  },
+  {
+    "params": [
+      1.8679620027542114,
+      2.6793670654296875,
+      3.8602726459503174
+    ],
+    "source_outcome": 1166.64577254,
+    "source_outcome_var": 212.51537351821565,
+    "target_outcome": 1020.6313443839999,
+    "target_outcome_var": 41.510129017357315,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_44_.ai"
+  },
+  {
+    "params": [
+      2.3165485858917236,
+      1.6842396259307861,
+      3.9671547412872314
+    ],
+    "source_outcome": 1261.759647628,
+    "source_outcome_var": 288.47399096312216,
+    "target_outcome": 1112.666763204,
+    "target_outcome_var": 153.7006309666428,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_45_.ai"
+  },
+  {
+    "params": [
+      2.309739112854004,
+      4.639068126678467,
+      0.11358358711004257
+    ],
+    "source_outcome": 1327.113829472,
+    "source_outcome_var": 287.3924071127285,
+    "target_outcome": 925.100975752,
+    "target_outcome_var": 28.38992841143428,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_46_.ai"
+  },
+  {
+    "params": [
+      2.9428493976593018,
+      3.7903356552124023,
+      0.7059594988822937
+    ],
+    "source_outcome": 1434.714338296,
+    "source_outcome_var": 307.12901432108305,
+    "target_outcome": 1092.971792228,
+    "target_outcome_var": 167.40221449993206,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_47_.ai"
+  },
+  {
+    "params": [
+      4.682413101196289,
+      1.4835777282714844,
+      3.6313047409057617
+    ],
+    "source_outcome": 1104.57894954,
+    "source_outcome_var": 278.479578761905,
+    "target_outcome": 1008.4622961639999,
+    "target_outcome_var": 72.00748326662055,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_48_.ai"
+  },
+  {
+    "params": [
+      0.9010040760040283,
+      4.061105251312256,
+      1.450580358505249
+    ],
+    "source_outcome": 1256.837656932,
+    "source_outcome_var": 262.3664317110262,
+    "target_outcome": 786.579005292,
+    "target_outcome_var": 39.70320966152107,
+    "saved_model": "bayrn_udr/checkpoints/bo_point_49_.ai"
+  }
+]
